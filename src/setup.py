@@ -2,7 +2,7 @@ from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
 import numpy as np
 import time
-import cpickle pickle
+import cPickle pickle
 
 # Your config file with training sets
 import config

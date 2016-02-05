@@ -1,8 +1,9 @@
 from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
 import numpy as np
-import cpickle as pickle
+import cPickle as pickle
 import time
+import sys
 
 # Your configuration file(s)
 import config
@@ -23,20 +24,22 @@ to write their own algorithms.
 """
 
 class Parser(object):
+   def __init__(self, command):
+      self.command = command
 
-   # Load in config parameters
-   # TODO change this so it can be sent in as a parameter, allow multiple classifiers
+   if len(sys.argv) < 2:
+      print "Usage: python parser.py [classifier.file]"
+      exit(-1)
+   classifier_file = sys.argv[1]
+
    try:
-      with open('classifier.pickle', 'rb') as handle:
+      with open(classifier_file, 'rb') as handle:
          train = pickle.load(handle)
          cll = NaiveBayesClassifier(train)
       print "Loaded classifier"
    except:
-      print "No classifier found! Run setup.py first to train a base classifier"
-      exit(1)
-
-   def __init__(self, command):
-      self.command = command
+      print "No classifier found or file corrupted! Run setup.py first to train a base classifier"
+      exit(-1)
 
    """
       Parses the command given, returns a json blob of possible location, object, subject, etc
