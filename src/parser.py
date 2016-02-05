@@ -1,7 +1,7 @@
 from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
 import numpy as np
-import pickle
+import cpickle as pickle
 import time
 
 # Your configuration file(s)
@@ -25,6 +25,7 @@ to write their own algorithms.
 class Parser(object):
 
    # Load in config parameters
+   # TODO change this so it can be sent in as a parameter, allow multiple classifiers
    try:
       with open('classifier.pickle', 'rb') as handle:
          train = pickle.load(handle)
