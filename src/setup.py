@@ -1,7 +1,8 @@
 from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
-from Parser import *
 import numpy as np
+import time
+import pickle
 
 # Your config file with training sets
 import config
@@ -19,5 +20,12 @@ the database
 
 """
 
-
-
+print "Training classifier..."
+s = time.time()
+train = config.train
+cll = NaiveBayesClassifier(train)
+print "Training complete " + str(time.time()-s)
+s = time.time()
+print "Saving classifier..."
+with open('classifier.pickle', 'wb') as handle:
+   pickle.dump(train, handle)

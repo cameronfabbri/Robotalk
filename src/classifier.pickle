@@ -1,0 +1,126 @@
+(lp0
+(S'hey'
+p1
+I0
+tp2
+a(S'hello'
+p3
+I0
+tp4
+a(S'hi'
+p5
+I0
+tp6
+a(S"what's up"
+p7
+I0
+tp8
+a(S'yo'
+p9
+I0
+tp10
+a(S"how's it going?"
+p11
+I0
+tp12
+a(S"what's new?"
+p13
+I0
+tp14
+a(S'hey how is your day'
+p15
+I0
+tp16
+a(S'good morning'
+p17
+I0
+tp18
+a(S'good evening'
+p19
+I0
+tp20
+a(S'howdy'
+p21
+I0
+tp22
+a(S'good night'
+p23
+I1
+tp24
+a(S'cya'
+p25
+I1
+tp26
+a(S'goodbye'
+p27
+I1
+tp28
+a(S'bye'
+p29
+I1
+tp30
+a(S'later'
+p31
+I1
+tp32
+a(S'have a good day'
+p33
+I1
+tp34
+a(S'farewell'
+p35
+I1
+tp36
+a(S'take care'
+p37
+I1
+tp38
+a(S'bye bye'
+p39
+I1
+tp40
+a(S'see you later'
+p41
+I1
+tp42
+a(S'have a good one'
+p43
+I1
+tp44
+a(S'so long'
+p45
+I1
+tp46
+a(S"i'm out"
+p47
+I1
+tp48
+a(S'bring me some'
+p49
+I2
+tp50
+a(S'go get me some'
+p51
+I2
+tp52
+a(S"i'd like you to bring me"
+p53
+I2
+tp54
+a(S'get me'
+p55
+I2
+tp56
+a(S'i want my'
+p57
+I2
+tp58
+a(S'please get me'
+p59
+I2
+tp60
+a(S'i need'
+p61
+I2
+tp62
+a.

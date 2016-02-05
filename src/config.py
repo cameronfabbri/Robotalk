@@ -7,39 +7,44 @@ sets up configuration for learning.
 You can add anything you want the robot to learn in here, 
 just add the functionality in Parser.py
 
-Maybe we can put in some ground truth commands here, then
-when the user wants to give a command, it'll analyze and 
-classify whether or not it was correct.
-
-
-Should have these just be json maybe in a file, or in the database.
-Database might be too slow. Try both and test times.  But I should
-get the exact numbers (not just 0 and 1) and set a threshold.  If
-the threshold is passed, then don't ask for user confirmation. If
-it isn't passed, asked for confirmation, then learn from it.
-	Use cl.accuracy() for that
+Supports multiclassification
 
 """
 
+# The number of labels you have
+num_labels = 3
 
-
-coffee_train = [
-	('go get me some coffee', 1),
-	('I need some coffee'   , 1),
-	('Go to the other room' , 0),
-	('Give this to'         , 0),
-	('I want some ice cream', 0)
-]
-
-
-# Greeting training data for intro and outro
-greeting_train = [
-	('bye',     1),
-	('cya',     1),
-	('goodbye', 1),
-	('exit',    1),
-	('hi',      0),
-	('hello',   0),
-	('hey',     0)
+train = [
+   ('hey', 0),
+   ('hello', 0),
+   ('hi', 0),
+   ('what\'s up', 0),
+   ('yo', 0),
+   ('how\'s it going?', 0),
+   ('what\'s new?', 0),
+   ('hey how is your day', 0),
+   ('good morning', 0),
+   ('good evening', 0),
+   ('howdy', 0),
+   ('good night', 1),
+   ('cya', 1),
+   ('goodbye', 1),
+   ('bye', 1),
+   ('later', 1),
+   ('have a good day', 1),
+   ('farewell', 1),
+   ('take care', 1),
+   ('bye bye', 1),
+   ('see you later', 1),
+   ('have a good one', 1),
+   ('so long', 1),
+   ('i\'m out', 1),
+   ('bring me some', 2),
+   ('go get me some', 2),
+   ('i\'d like you to bring me', 2),
+   ('get me', 2),
+   ('i want my', 2),
+   ('please get me', 2),
+   ('i need', 2)
 ]
 
