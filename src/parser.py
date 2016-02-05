@@ -31,6 +31,8 @@ If it doesn't understand something, say 'I didn't understand that, what
 would you like me to learn?'' Say the category, or have it list categories.
 Create new category if it doesn't have it.
 
+Look at word2vec for possible multiclassification
+
 """
 
 class Parser(object):
