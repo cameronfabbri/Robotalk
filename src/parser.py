@@ -1,15 +1,8 @@
 from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
-from textblob.classifiers import MaxEntClassifier
 import numpy as np
 import pickle
-#tb = Blobber(analyzer=NaiveBayesClassifier())
-
-
-import json
 import time
-
-
 
 # Your configuration file(s)
 import config
@@ -32,9 +25,14 @@ to write their own algorithms.
 class Parser(object):
 
    # Load in config parameters
-   with open('classifier.pickle', 'rb') as handle:
-      train = pickle.load(handle)
-   print "Loaded classifier"
+   try:
+      with open('classifier.pickle', 'rb') as handle:
+         train = pickle.load(handle)
+         cll = NaiveBayesClassifier(train)
+      print "Loaded classifier"
+   except:
+      print "No classifier found! Run setup.py first to train a base classifier"
+      exit(1)
 
    def __init__(self, command):
       self.command = command
@@ -43,20 +41,15 @@ class Parser(object):
       Parses the command given, returns a json blob of possible location, object, subject, etc
    """
    def parseCommand(command, cll):
-      if command == "bye":
-         exit()
-      # First check if we have a matching command. If not, try and figure it out.
-      #command_analyzed = cl.classify(command)
       prob_dist = cll.prob_classify(command)
-      # Use this to find what label is the highest
+      most_probable_label = 0
       for num in range(0, config.num_labels):
+         if prob_dist.prob(num) > prob_dist.prob(most_probable_label):
+            most_probable_label = num
          print "Probability for label " + str(num) + ": " + str(prob_dist.prob(num))
-
+      print "Most probable label: " + str(most_probable_label)
 
    while True:
-      # TODO put this trainer in the setup file, and pickle it and put it in the db, then grab it
-      cll = NaiveBayesClassifier(train)
       command = raw_input("> ")
       s = time.time()
       parseCommand(command, cll)
-#      print "Parse command took " + str(time.time() - s) + " seconds..."
