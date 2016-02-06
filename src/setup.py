@@ -2,7 +2,7 @@ from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
 import numpy as np
 import time
-import cPickle pickle
+import cPickle as pickle
 
 # Your config file with training sets
 import config
@@ -21,8 +21,7 @@ the database
 """
 try:
    with open('classifier.pickle', 'r'):
-      print "A classifier has already been trained! Enter in a new filename or simply enter 'o' to overwrite
-      the current classifier"
+      print "A classifier has already been trained! Enter in a new filename or simply enter 'o' to overwrite the current classifier"
 except:
    print "Training classifier..."
    s = time.time()
