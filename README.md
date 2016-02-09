@@ -11,10 +11,11 @@ smallTalk. smallTalk uses TextBlob to build a multiclass classifier based on the
 
 ## Requirements
 
-smallTalk is written in Python and only requires [TextBlob](https://textblob.readthedocs.org/en/dev/)
+smallTalk is written in Python and requires [TextBlob](https://textblob.readthedocs.org/en/dev/) and numpy
 
 1. pip install -U textblob
 2. python -m textblob.download_corpora
+3. sudo apt-get install python-numpy
 
 ## Usage
 
