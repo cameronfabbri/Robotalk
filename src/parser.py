@@ -53,6 +53,8 @@ class Parser(object):
          print "Probability for label " + str(num) + ": " + str(prob_dist.prob(num))
       print "Most probable label: " + str(most_probable_label)
 
+
+
    while True:
       command = raw_input("> ")
       s = time.time()

@@ -12,7 +12,7 @@ Supports multiclassification
 """
 
 # The number of labels you have
-num_labels = 3
+num_labels = 4
 
 train = [
    ('hey', 0),
@@ -45,6 +45,10 @@ train = [
    ('get me', 2),
    ('i want my', 2),
    ('please get me', 2),
-   ('i need', 2)
+   ('i need', 2),
+   ('i want to teach you something', 3),
+   ('time to learn', 3),
+   ('want to learn something new?', 3),
+   ('new command', 3)
 ]
 
