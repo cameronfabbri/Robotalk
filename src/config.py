@@ -11,8 +11,11 @@ Supports multiclassification
 
 """
 
-# The number of labels you have
-num_labels = 4
+entrance_label = 0
+exit_label     = 1
+learn_label    = 2
+
+confidence_threshold = 0.85
 
 train = [
    ('hey', 0),
@@ -39,16 +42,12 @@ train = [
    ('have a good one', 1),
    ('so long', 1),
    ('i\'m out', 1),
-   ('bring me some', 2),
-   ('go get me some', 2),
-   ('i\'d like you to bring me', 2),
-   ('get me', 2),
-   ('i want my', 2),
-   ('please get me', 2),
-   ('i need', 2),
-   ('i want to teach you something', 3),
-   ('time to learn', 3),
-   ('want to learn something new?', 3),
-   ('new command', 3)
+   ('i want to teach you something', 2),
+   ('time to learn', 2),
+   ('want to learn something new?', 2),
+   ('new command', 2),
+   ('learn new command', 2),
+   ('new command to learn', 2)
+
 ]
 

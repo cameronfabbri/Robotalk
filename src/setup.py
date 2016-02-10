@@ -19,10 +19,8 @@ This setup file trains the classifiers and puts the 'cl' object into
 the database
 
 """
-try:
-   with open('classifier.pickle', 'r'):
-      print "A classifier has already been trained! Enter in a new filename or simply enter 'o' to overwrite the current classifier"
-except:
+
+def train(filename):
    print "Training classifier..."
    s = time.time()
    train = config.train
@@ -30,5 +28,18 @@ except:
    print "Training complete " + str(time.time()-s)
    s = time.time()
    print "Saving classifier..."
-   with open('classifier.pickle', 'wb') as handle:
-      pickle.dump(train, handle)
+   f = open(filename, 'wb')
+   pickle.dump(cll, f)
+   #with open(filename, 'wb') as handle:
+      #pickle.dump(train, handle)
+   #   pickle.dump(cll, handle)
+
+try:
+   with open('classifier.pickle', 'r'):
+      inp = raw_input("A classifier has already been trained! Enter in a new filename or simply enter 'o' to overwrite the current classifier\n")
+      if inp == "o":
+         train("classifier.pickle")
+      else:
+         train(inp)
+except:
+   train("classifier.pickle")
