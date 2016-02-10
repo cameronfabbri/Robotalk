@@ -68,8 +68,6 @@ class Parser(object):
          print "Probability for label " + str(label) + ": " + str(prob_dist.prob(label))
       print "Most probable label: " + str(mpl)          
 
-      #probability = prob_dist.prob(mpl)
-
       if mpl == exit_label and prob_dist.prob(mpl) > confidence_threshold:
          print "Goodbye!"
          exit()      
@@ -89,14 +87,18 @@ class Parser(object):
          f = open(classifier_file, 'wb')
          pickle.dump(cll, f)
 
-         #with open(filename, 'wb') as handle:
-         #   pickle.dump(train, handle)
-
-         ''' this is for a different type of old command
+      # this is if the threshold wasn't passed. Add more to knowledge
+      if prob_dist.prob(mpl) < confidence_threshold:
+         print "I'm not sure what you mean...\n"
          l = raw_input("Please give me an example command for which this falls into\n")
          ll = TextBlob(l, classifier=cll).classify()
-         print "Okay! Looks like this is for label "
-         '''
+
+         # find the probabilities of the commands, sort them, then ask in descending order
+         
+
+         print "Adding command " + str(command) + " with label " + str(ll)
+         new_data = [(command, ll)]
+         
 
    while True:
       command = raw_input("> ")
