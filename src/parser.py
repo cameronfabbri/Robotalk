@@ -21,6 +21,11 @@ We want to parse each command given. We will only be able to support a
 limited number of functions, then the developer using this will be able
 to write their own algorithms.
 
+
+TODO when adding a new command, need to have a few more similar commands
+be put in. Also don't add it automatically, check for confirmation and
+loop through the possible commands
+
 """
 
 class Parser(object):
@@ -52,8 +57,6 @@ class Parser(object):
 
       # most probable label.
       mpl  = 0 
-      
-
       # This will print out the label it thinks it is
       #blob = TextBlob(command, classifier=cll)
       #print blob.classify()

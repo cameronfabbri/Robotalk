@@ -15,7 +15,7 @@ entrance_label = 0
 exit_label     = 1
 learn_label    = 2
 
-confidence_threshold = 0.7
+confidence_threshold = 0.6
 
 train = [
    ('hey', 0),
@@ -48,7 +48,8 @@ train = [
    ('here\'s something new' ,2),
    ('remember this', 2),
    ('you should know this', 2),
-   ('go forward', 3)
-
+   ('go forward', 3),
+   ('go there', 3),
+   ('go straight', 3)
 ]
 
