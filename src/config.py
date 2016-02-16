@@ -18,33 +18,29 @@ learn_label    = 2
 confidence_threshold = 0.75
 
 built_in = [
-   ('new commad'),
+   ('new command'),
    ('goodbye')
 ]
 
 train = [
-   ('hello how are you today', 0),
-   ('what\'s up', 0),
-   ('how\'s it going?', 0),
-   ('hey how is your day', 0),
-   ('good morning', 0),
-   ('good night', 1),
-   ('i\'m going home', 1),
-   ('have a good day', 1),
-   ('see you later', 1),
-   ('i want to teach you something', 2),
-   ('time to learn', 2),
-   ('want to learn something new?', 2),
-   ('new command', 2),
-   ('learn new command', 2),
-   ('new command to learn', 2),
-   ('i\'ve got a new command for you', 2),
-   ('here\'s something new' ,2),
-   ('remember this', 2),
-   ('you should know this', 2),
-   ('go and get me some coffee', 3),
-   ('go over to the break room', 3),
-   ('go down the hall and deliver this to the mail room', 3),
-   ('bring this letter to the mail room down the hall', 3),
-   ('deliver this letter to room 365', 3)
+   ('hello how are you today', 'greeting'),
+   ('what\'s up', 'greeting'),
+   ('how\'s it going?', 'greeting'),
+   ('hey how is your day', 'greeting'),
+   ('good morning', 'greeting'),
+   ('good night', 'exit'),
+   ('i\'m going home', 'exit'),
+   ('have a good day', 'exit'),
+   ('see you later', 'exit'),
+   ('go and get me some coffee', 'get'),
+   ('go and get me a pencil', 'get'),
+   ('go to the break room and get my coffee', 'get'),
+   ('go down the hall and deliver this to the mail room', 'deliver'),
+   ('go to my office and drop off this paper', 'deliver'),
+   ('bring this cup of coffee down the hall to my office', 'deliver'),
+   ('bring this letter to the mail room down the hall', 'deliver'),
+   ('deliver this letter to room 365', 'deliver'),
+   ('go over to the break room', 'go'),
+   ('go down the hall', 'go'),
+   ('go into the room next door', 'go')
 ]

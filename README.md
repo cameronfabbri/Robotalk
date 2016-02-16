@@ -25,3 +25,10 @@ The first thing to be done is to train the classifier. This can be done by runni
 setup.py uses config.py for the original training data, so edit it to fit your needs.
 The classifier has state by pickling it. You have the ability to retrain the classifier, or simply
 save another one, and choosing which classifier to use at runtime.
+
+To learn a new command, simply say "new command". You will be prompted to specify a label
+for the type of command, and the command itself. It is a good idea when learning a new
+command to learn more than just one for the specific label. 
+
+The parser will return the label that it classifies your command. Simply use this label for
+the functionality you need. 

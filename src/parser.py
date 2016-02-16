@@ -40,12 +40,13 @@ except:
    print "No classifier found or file corrupted! Run setup.py first to train a base classifier"
    exit(-1)
 
-def learn_new_command(command, labels):
+def learn_new_command(command):
    print "Okay learning a new command...\n"
    # get last label used
-   last_label = labels[::-1]
-   ll = last_label[0]         
-   new_label = ll + 1
+   #last_label = labels[::-1]
+   #ll = last_label[0]         
+   #new_label = ll + 1
+   new_label = raw_input("What type of command is this? (The label for the command, one word only)\n")
    print "new label: " + str(new_label)
    new_command = raw_input("New Command: ")
    new_data = [(new_command, new_label)]
@@ -56,9 +57,10 @@ def learn_new_command(command, labels):
    return -1
 
 def update_classifier(cll, prob_label_dict):
-   print "I'm not sure what you mean...\n"
    l = raw_input("Please give me an example command for which this falls into\n")
-
+   # This is if you actually don't want to update the classifier
+   if l == "no command":
+      return -1
    # This returns a label
    ll = TextBlob(l, classifier=cll).classify()
 
@@ -75,13 +77,21 @@ def update_classifier(cll, prob_label_dict):
    pickle.dump(cll, f)
    return -1
 
+
+"""
+   Method for handling built in commands. Built in commands should only
+   be one word commands that are hard to classify or are used frequently
+   e.g "exit", "hello", "stop", etc
+
+   If the command is built in, the parser will simply return the command
+   instead of the label, so make sure you handle that on the robot side.
+"""
 def isBuiltIn(command):
    built_in = config.built_in
-   print built_in
    for b_command in built_in:
       if b_command == command:
-         print "Built in command " + str(command)
-         exit()
+         return True
+   return False
 
 """
    Parses the command given, returns a json blob of possible location, object, subject, etc
@@ -102,7 +112,8 @@ def parseCommand(command, cll, classifier_file):
    #print blob.classify()
 
    # before using the classifier, check if it is a built in command
-   isBuiltIn(command)
+   if isBuiltIn(command):
+      return command
 
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
@@ -111,18 +122,19 @@ def parseCommand(command, cll, classifier_file):
       prob_label_dict[label] = prob_dist.prob(label)
    print "Most probable label: " + str(mpl)          
 
-   # Maybe for short commands just have them built in
-   if mpl == exit_label and prob_dist.prob(mpl) > confidence_threshold:
-      print "Goodbye!"
-
    # This is for learning a brand new command / label
    if mpl == learn_label and prob_dist.prob(mpl) > confidence_threshold:
-      learn_new_command(command, labels)
+      return learn_new_command(command, labels)
 
    # this is if the threshold wasn't passed. Add more to knowledge
    if prob_dist.prob(mpl) < confidence_threshold:
-      update_classifier(cll, prob_label_dict)
-
+      a = raw_input("Is this a " + mpl + " command?\n")
+      if a == "yes":
+         return mpl
+      else:
+         ans = raw_input("Want to add this to something I already know?\n")
+         if ans == "yes":
+            return update_classifier(cll, prob_label_dict)
    return mpl
 
 while True:
@@ -133,3 +145,6 @@ while True:
    # The developer has to link this label with their functions
    return_label = parseCommand(command, cll, classifier_file)
    print "return label: " + str(return_label)
+
+   if return_label == "new command":
+      learn_new_command(command)
