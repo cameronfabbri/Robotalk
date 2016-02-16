@@ -10,16 +10,11 @@ just add the functionality in Parser.py
 Supports multiclassification
 
 """
-
-entrance_label = 0
-exit_label     = 1
-learn_label    = 2
-
 confidence_threshold = 0.75
 
 built_in = [
    ('new command'),
-   ('goodbye')
+   ('exit')
 ]
 
 train = [

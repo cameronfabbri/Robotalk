@@ -42,11 +42,9 @@ except:
 
 def learn_new_command(command):
    print "Okay learning a new command...\n"
-   # get last label used
-   #last_label = labels[::-1]
-   #ll = last_label[0]         
-   #new_label = ll + 1
    new_label = raw_input("What type of command is this? (The label for the command, one word only)\n")
+   if new_label = "no command":
+      return -1
    print "new label: " + str(new_label)
    new_command = raw_input("New Command: ")
    new_data = [(new_command, new_label)]
@@ -98,18 +96,12 @@ def isBuiltIn(command):
 """
 def parseCommand(command, cll, classifier_file):
    confidence_threshold = config.confidence_threshold
-   entrance_label       = config.entrance_label
-   learn_label          = config.learn_label
-   exit_label           = config.exit_label
    prob_dist            = cll.prob_classify(command)
    labels               = cll.labels()
    prob_label_dict      = dict()
 
    # most probable label.
-   mpl  = 0 
-   # This will print out the label it thinks it is
-   #blob = TextBlob(command, classifier=cll)
-   #print blob.classify()
+   mpl  = -1
 
    # before using the classifier, check if it is a built in command
    if isBuiltIn(command):
@@ -123,8 +115,8 @@ def parseCommand(command, cll, classifier_file):
    print "Most probable label: " + str(mpl)          
 
    # This is for learning a brand new command / label
-   if mpl == learn_label and prob_dist.prob(mpl) > confidence_threshold:
-      return learn_new_command(command, labels)
+   #if mpl == learn_label and prob_dist.prob(mpl) > confidence_threshold:
+   #   return learn_new_command(command, labels)
 
    # this is if the threshold wasn't passed. Add more to knowledge
    if prob_dist.prob(mpl) < confidence_threshold:
