@@ -14,7 +14,9 @@ confidence_threshold = 0.75
 
 built_in = [
    ('new command'),
-   ('exit')
+   ('exit'),
+   ('train'),
+   ('test command')
 ]
 
 train = [

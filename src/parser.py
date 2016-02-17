@@ -40,16 +40,37 @@ except:
    print "No classifier found or file corrupted! Run setup.py first to train a base classifier"
    exit(-1)
 
+def train():
+   label = raw_input("Tell me the label:\n")
+   command = raw_input("Tell me the command:\n")
+   new_data = [(command, label)]
+   f = open(classifier_file, 'wb')
+   pickle.dump(cll, f)
+
+def test_command(cll):
+   command = raw_input("What command would you like to test?\n")
+   mpl = -1
+   labels = cll.labels()
+   prob_dist = cll.prob_classify(command)
+   for label in labels:
+      if prob_dist.prob(label) > prob_dist.prob(mpl):
+         mpl = label
+   print "I think this is a " + str(mpl) + " command"
+   
+
+
 def learn_new_command(command):
    print "Okay learning a new command...\n"
    new_label = raw_input("What type of command is this? (The label for the command, one word only)\n")
-   if new_label = "no command":
+   if new_label == "no command":
       return -1
    print "new label: " + str(new_label)
    new_command = raw_input("New Command: ")
    new_data = [(new_command, new_label)]
    cll.update(new_data)
    print "Saving new classifier..."
+   print "It is suggested you give me more than one example for this new command!"
+   print "Tell me to train so you can give me more to learn!"
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
    return -1
@@ -90,6 +111,13 @@ def isBuiltIn(command):
       if b_command == command:
          return True
    return False
+"""
+   This is updating the classifier when we know what label it should be
+"""
+def addKnowledge(new_data, cll):
+   cll.update(new_data)
+   f = open(classifier_file, 'wb')
+   pickle.dump(cll, f)
 
 """
    Parses the command given, returns a json blob of possible location, object, subject, etc
@@ -114,19 +142,26 @@ def parseCommand(command, cll, classifier_file):
       prob_label_dict[label] = prob_dist.prob(label)
    print "Most probable label: " + str(mpl)          
 
-   # This is for learning a brand new command / label
-   #if mpl == learn_label and prob_dist.prob(mpl) > confidence_threshold:
-   #   return learn_new_command(command, labels)
-
    # this is if the threshold wasn't passed. Add more to knowledge
    if prob_dist.prob(mpl) < confidence_threshold:
       a = raw_input("Is this a " + mpl + " command?\n")
       if a == "yes":
+         new_data = [(command, mpl)]
+         addKnowledge(new_data, cll)
          return mpl
       else:
          ans = raw_input("Want to add this to something I already know?\n")
          if ans == "yes":
             return update_classifier(cll, prob_label_dict)
+         else:
+            print "Okay then!"
+            return -1
+
+   # add what was just said to the classifier if it passed the threshold
+   if prob_dist.prob(mpl) > confidence_threshold:
+      new_data = [(command, mpl)]
+      addKnowledge(new_data, cll)
+      print "Adding " + str(new_data) + " to classifier"
    return mpl
 
 while True:
@@ -138,5 +173,14 @@ while True:
    return_label = parseCommand(command, cll, classifier_file)
    print "return label: " + str(return_label)
 
+   #mpl = return_label[1]
+   #return_label = return_label[0]
+
    if return_label == "new command":
       learn_new_command(command)
+
+   if return_label == "train":
+      train()
+
+   if return_label == "test command":
+      test_command(cll)
