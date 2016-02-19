@@ -23,6 +23,19 @@ built_in = [
    ('show labels')
 ]
 
+test = [
+   ('hey what\'s up', 'greeting'),
+   ('hi how are you?', 'greeting'),
+   ('hello there', 'greeting'),
+   ('i think i\'m going to leave now', 'exit'),
+   ('cya', 'exit'),
+   ('i\'m leaving', 'exit'),
+   ('i\'m going home', 'exit'),
+   ('can you bring this paper to my boss?', 'deliver'),
+   ('bring my books back to the classroom', 'deliver'),
+   ('go to the main office and give them this paper please', 'deliver')
+]
+
 train = [
    ('hello how are you today', 'greeting'),
    ('what\'s up', 'greeting'),

@@ -36,12 +36,14 @@ except:
    exit(-1)
 
 def train():
-   os.system("espeak 'Tell me the label'")
+   os.system("espeak 'What is the label'")
    label = raw_input("> ")
-   command = raw_input("Tell me the command:\n")
+   command = raw_input("What is the command:\n")
    new_data = [(command, label)]
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
+   os.system("espeak 'Alright'")
+   return -1
 
 def test_command(cll):
    os.system("espeak 'What command would you like to test?'")
@@ -124,7 +126,6 @@ def parseCommand(command, cll, classifier_file):
    prob_dist            = cll.prob_classify(command)
    labels               = cll.labels()
    prob_label_dict      = dict()
-
    # most probable label.
    mpl  = -1
 
@@ -132,16 +133,11 @@ def parseCommand(command, cll, classifier_file):
    if isBuiltIn(command):
       return command
 
-   test_list = list()
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
-      # Uncomment if you want to see the server print out each prob
-      #print "Probability for label " + str(label) + ": " + str(prob_dist.prob(label))
-      test_list.append("Probability for label " + str(label) + ": " + str(prob_dist.prob(label)))
+      print "Probability for label " + str(label) + ": " + str(prob_dist.prob(label))
       prob_label_dict[label] = prob_dist.prob(label)
-   # Uncomment if you want to send back the entire list of probs
-   #conn.send(str(test_list))
    os.system("espeak 'Most probable label %s'" %(str(mpl)))
    print "Most probable label: " + str(mpl)
 
@@ -166,16 +162,15 @@ def parseCommand(command, cll, classifier_file):
    if prob_dist.prob(mpl) > confidence_threshold:
       new_data = [(command, mpl)]
       addKnowledge(new_data, cll)
-      os.system("espeak 'Adding %s to classifier'" %(str(new_data)))
    return mpl
 
 while True:
    command = raw_input("> ")
    return_label = parseCommand(command, cll, classifier_file)         
-# This return label is what is sent to the robot
-# The developer has to link this label with their functions
 
-
+   # This return label is what is sent to the robot
+   # The developer has to link this label with their functions
+   
    # I think I should change this...
    if return_label == "new command":
       learn_new_command(command)
@@ -189,4 +184,3 @@ while True:
    if return_label == "show labels":
       show_labels(cll)
 
-#conn.send("return label: " + str(return_label))
