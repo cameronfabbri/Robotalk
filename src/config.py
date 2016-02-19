@@ -12,11 +12,15 @@ Supports multiclassification
 """
 confidence_threshold = 0.75
 
+TCP_IP = '127.0.0.1'
+TCP_PORT = 5556
+
 built_in = [
    ('new command'),
    ('exit'),
    ('train'),
-   ('test command')
+   ('test command'),
+   ('show labels')
 ]
 
 train = [
