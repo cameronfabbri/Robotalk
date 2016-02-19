@@ -1,5 +1,7 @@
 from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
+from textblob.classifiers import DecisionTreeClassifier
+from textblob.classifiers import MaxEntClassifier
 
 """
 
@@ -35,28 +37,35 @@ train = [
    ('sweep the hallway pleane'                                    ,'clean'),
    ('mop up the blood on the floor'                               ,'clean'),
    ('make all of the beds'                                        ,'clean'),
-   ('go to room 341 and mop the floor', 'clean'),
-   ('don\'t let anybody else in the door', 'secure'),
-   ('make sure all the doors are locked on this floor','secure'),
-   ('stop the people coming from the floor below','secure')
+   ('go to room 341 and mop the floor'                            ,'clean'),
+   ('don\'t let anybody else in the door'                         ,'secure'),
+   ('make sure all the doors are locked on this floor'            ,'secure'),
+   ('stop the people coming from the floor below'                 ,'secure')
 ]
 
 test = [
-   ('bring these bottles of percocet back to the lab','deliver'),
+   ('bring these bottles of percocet back to the lab'           ,'deliver'),
    ('take these pills and bring them to the patient in room 124','deliver'),
-   ('go get the scissors from the nurse','get'),
-   ('can you bring me the medicine from the lab','get'),
-   ('listen to me','note'),
-   ('alright take a note','note'),
-   ('go to the operating room and mop up the floor','clean'),
-   ('clean up the OR','clean'),
-   ('pick up the trash in the hallway','clean'),
-   ('make sure the doors are locked','secure'),
-   ('alert the nurses we have intruders','secure')
+   ('go get the scissors from the nurse'                        ,'get'),
+   ('can you bring me the medicine from the lab'                ,'get'),
+   ('listen to me'                                              ,'note'),
+   ('alright take a note'                                       ,'note'),
+   ('go to the operating room and mop up the floor'             ,'clean'),
+   ('clean up the OR'                                           ,'clean'),
+   ('pick up the trash in the hallway'                          ,'clean'),
+   ('make sure the doors are locked'                            ,'secure'),
+   ('alert the nurses we have intruders'                        ,'secure')
 ]
 
-cll = NaiveBayesClassifier(train)
+nbayes = NaiveBayesClassifier(train)
+n_acc = nbayes.accuracy(test)
 
-acc = cll.accuracy(test)
-print "Accuracy: " + str(acc)
+decision = DecisionTreeClassifier(train)
+d_acc = decision.accuracy(test)
 
+max_ent = MaxEntClassifier(train)
+m_acc = max_ent.accuracy(test)
+
+print "\nNaive Bayes accuracy: " + str(n_acc)
+print "Decision Tree accuracy: " + str(d_acc)
+print "MaxEnt accuracy: " + str(m_acc)
