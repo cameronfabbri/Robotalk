@@ -13,9 +13,8 @@ BUFFER_SIZE = 1024
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TCP_IP, TCP_PORT))
+print "Before while"
 while True:
-   data = s.recv(1024) 
-   print " < " + str(data)
-   response = raw_input("Reply: ")
+   response = raw_input("> ")
    s.sendall(response)
 s.close()

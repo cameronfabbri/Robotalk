@@ -146,7 +146,6 @@ def show_labels(cll):
    
    sockets.send("a")
 
-
 """
    Parses the command given, returns a json blob of possible location, object, subject, etc
 """
@@ -202,11 +201,16 @@ def parseCommand(command, cll, classifier_file):
 
 while True:  
    command = sockets.recv(1024)
+   print "After command"
    if not command: break
+   print "command"
    return_label = parseCommand(command, cll, classifier_file)
+   print "got return label", return_label
    if return_label == "new command":
       learn_new_command(command)
-
+   else:
+      print "Not new command"
+   print "end"
 
 conn.close()
          #return_label = parseCommand(command, cll, classifier_file)         

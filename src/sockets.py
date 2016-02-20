@@ -14,3 +14,8 @@ def send(message):
 
 def recv(message):
 	return conn.recv(message)
+
+
+#receive array seeing if there is a new 
+# data structures for sending and receiving
+# thread for each
