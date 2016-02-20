@@ -195,11 +195,12 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((TCP_IP, TCP_PORT))
 s.listen(1)
 conn, addr = s.accept()
-print "Here"
-while True:
-   print "Waiting..."
+
+while True:  
    command = conn.recv(1024)
-   print "Command: " + str(command)
+   if not command: break
+   return_labal = parse(command, cll, classifier_file)
+
 conn.close()
          #return_label = parseCommand(command, cll, classifier_file)         
 # This return label is what is sent to the robot
