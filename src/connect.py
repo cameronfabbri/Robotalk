@@ -15,6 +15,9 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TCP_IP, TCP_PORT))
 print "Before while"
 while True:
-   response = raw_input("> ")
-   s.sendall(response)
+   command = raw_input("> ")
+   s.sendall(command)
+   response = s.recv(BUFFER_SIZE)
+   print "response: " + str(response)
+print "closed"
 s.close()

@@ -9,13 +9,11 @@ import socket
 
 # Your configuration file(s)
 import config
-import sockets
+#import server
 
-BUFFER_SIZE = 1024
+#BUFFER_SIZE = server.BUFFER_SIZE
 
 """
-
-
 
 Cameron Fabbri
 1/31/2016
@@ -35,54 +33,38 @@ loop through the possible commands
 
 """
 
-s = sockets.s
-conn = sockets.conn
-addr = sockets.addr
-print "got s"
-
-if len(sys.argv) < 2:
-   print "Usage: python parser.py [classifier.file]"
-   exit(-1)
-classifier_file = sys.argv[1]
-
-try:
-   cll = pickle.load(open(classifier_file, 'rb'))  
-   print "Loaded classifier"
-except:
-   print "No classifier found or file corrupted! Run setup.py first to train a base classifier"
-   exit(-1)
-
 def train():
-   sockets.send("Tell me the label:\n")
-   label = sockets.recv(BUFFER_SIZE)
+   server.send("Tell me the label:\n")
+   label = server.recv(BUFFER_SIZE)
    command = raw_input("Tell me the command:\n")
    new_data = [(command, label)]
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
 
 def test_command(cll):
-   sockets.send("What command would you like to test?\n")
-   command = sockets.recv(BUFFER_SIZE)
+   server.send("What command would you like to test?\n")
+   command = server.recv(BUFFER_SIZE)
    mpl = -1
    labels = cll.labels()
    prob_dist = cll.prob_classify(command)
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
-   sockets.send("I think this is a " + str(mpl) + " command")
+   server.send("I think this is a " + str(mpl) + " command")
    
 def learn_new_command(command):
    print "in learn new command"
-   sockets.send("What type of command is this? (The label for the command, one word only)")
-   new_label = sockets.recv(BUFFER_SIZE)
+   server.send("What type of command is this? (The label for the command, one word only)")
+   new_label = server.recv(BUFFER_SIZE)
    print new_label
    print "Here..."
    if new_label == "no command":
       return -1
    #conn.send("new label: " + str(new_label))
-   sockets.send("got new label")
+   server.send("got new label")
    print "Sent label..."
-   new_command = sockets.recv(BUFFER_SIZE)
+   new_command = server.recv(BUFFER_SIZE)
+   server.send("Got it")
    print "Asked for new label"
    #new_command = raw_input("New Command: ")
    new_data = [(new_command, new_label)]
@@ -96,8 +78,8 @@ def learn_new_command(command):
    return -1
 
 def update_classifier(cll, prob_label_dict):
-   sockets.send("Please give me an example command for which this falls into\n")
-   l = sockets.recv(BUFFER_SIZE)
+   server.send("Please give me an example command for which this falls into\n")
+   l = server.recv(BUFFER_SIZE)
    # This is if you actually don't want to update the classifier
    if l == "no command":
       return -1
@@ -109,7 +91,7 @@ def update_classifier(cll, prob_label_dict):
    prob_label_list = list(prob_label_dict)
    
    new_label = prob_label_list[0][0]
-   sockets.send("Adding command " + str(command) + " with label " + str(new_label))
+   server.send("Adding command " + str(command) + " with label " + str(new_label))
 
    new_data = [(command, new_label)]
    cll.update(new_data)
@@ -144,7 +126,7 @@ def addKnowledge(new_data, cll):
 def show_labels(cll):
    labels = cll.labels()
    
-   sockets.send("a")
+   server.send("a")
 
 """
    Parses the command given, returns a json blob of possible location, object, subject, etc
@@ -173,46 +155,33 @@ def parseCommand(command, cll, classifier_file):
       prob_label_dict[label] = prob_dist.prob(label)
    # Uncomment if you want to send back the entire list of probs
    #conn.send(str(test_list))
-   sockets.send("Most probable label: " + str(mpl) + ", prob: " + str(prob_dist.prob(mpl)))
+   server.send("Most probable label: " + str(mpl) + ", prob: " + str(prob_dist.prob(mpl)))
 
    # this is if the threshold wasn't passed. Add more to knowledge
    if prob_dist.prob(mpl) < confidence_threshold:
-      sockets.send("Is this a " + mpl + " command?\n")
-      a = sockets.recv(BUFFER_SIZE)
+      server.send("Is this a " + mpl + " command?\n")
+      a = server.recv(BUFFER_SIZE)
       if a == "yes":
          new_data = [(command, mpl)]
          addKnowledge(new_data, cll)
          return mpl
       else:
-         sockets.send("Want to add this to something I already know?\n")
-         ans = sockets.recv(BUFFER_SIZE)
+         server.send("Want to add this to something I already know?\n")
+         ans = server.recv(BUFFER_SIZE)
          if ans == "yes":
             return update_classifier(cll, prob_label_dict)
          else:
-            sockets.send("Okay then!")
+            server.send("Okay then!")
             return -1
 
    # add what was just said to the classifier if it passed the threshold
    if prob_dist.prob(mpl) > confidence_threshold:
       new_data = [(command, mpl)]
       addKnowledge(new_data, cll)
-      sockets.send("Adding " + str(new_data) + " to classifier")
+      server.send("Adding " + str(new_data) + " to classifier")
    return mpl
 
-while True:  
-   command = sockets.recv(1024)
-   print "After command"
-   if not command: break
-   print "command"
-   return_label = parseCommand(command, cll, classifier_file)
-   print "got return label", return_label
-   if return_label == "new command":
-      learn_new_command(command)
-   else:
-      print "Not new command"
-   print "end"
 
-conn.close()
          #return_label = parseCommand(command, cll, classifier_file)         
 # This return label is what is sent to the robot
 # The developer has to link this label with their functions
