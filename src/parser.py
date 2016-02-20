@@ -36,6 +36,9 @@ loop through the possible commands
 """
 
 s = sockets.s
+conn = sockets.conn
+addr = sockets.addr
+print "got s"
 
 if len(sys.argv) < 2:
    print "Usage: python parser.py [classifier.file]"
@@ -224,4 +227,4 @@ if return_label == "test command":
 if return_label == "show labels":
    show_labels(cll)
 """
-#conn.send("return label: " + str(return_label))
+
