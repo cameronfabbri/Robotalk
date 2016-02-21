@@ -9,7 +9,6 @@ import socket
 
 # Your configuration file(s)
 import config
-#import server
 
 #BUFFER_SIZE = server.BUFFER_SIZE
 
@@ -25,11 +24,6 @@ from other classes.
 We want to parse each command given. We will only be able to support a 
 limited number of functions, then the developer using this will be able
 to write their own algorithms.
-
-
-TODO when adding a new command, need to have a few more similar commands
-be put in. Also don't add it automatically, check for confirmation and
-loop through the possible commands
 
 """
 
@@ -50,12 +44,13 @@ def test_command(cll):
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
-   server.send("I think this is a " + str(mpl) + " command")
-   
+   #server.send("I think this is a " + str(mpl) + " command")
+   return "I think this is a %s command" %(str(mpl))
+
 def learn_new_command(command):
-   print "in learn new command"
-   server.send("What type of command is this? (The label for the command, one word only)")
-   new_label = server.recv(BUFFER_SIZE)
+   return_message = list()   #server.send("What type of command is this? (The label for the command, one word only)")
+   return_message.append("What type of command is this? (The label for the command, one word only)")
+   #new_label = server.recv(BUFFER_SIZE)
    print new_label
    print "Here..."
    if new_label == "no command":
@@ -64,18 +59,14 @@ def learn_new_command(command):
    server.send("got new label")
    print "Sent label..."
    new_command = server.recv(BUFFER_SIZE)
-   server.send("Got it")
+   #server.send("Got it")
    print "Asked for new label"
    #new_command = raw_input("New Command: ")
    new_data = [(new_command, new_label)]
    cll.update(new_data)
-   
-   #conn.send("Saving new classifier...")
-   #conn.send("It is suggested you give me more than one example for this new command!")
-   #conn.send("Tell me to train so you can give me more to learn!")
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
-   return -1
+   return return_message
 
 def update_classifier(cll, prob_label_dict):
    server.send("Please give me an example command for which this falls into\n")
@@ -126,19 +117,15 @@ def addKnowledge(new_data, cll):
 def show_labels(cll):
    labels = cll.labels()
    
-   server.send("a")
 
 """
    Parses the command given, returns a json blob of possible location, object, subject, etc
 """
 def parseCommand(command, cll, classifier_file):
-   print "Here"
    confidence_threshold = config.confidence_threshold
    prob_dist            = cll.prob_classify(command)
    labels               = cll.labels()
    prob_label_dict      = dict()
-
-   # most probable label.
    mpl  = -1
 
    # before using the classifier, check if it is a built in command
@@ -180,12 +167,6 @@ def parseCommand(command, cll, classifier_file):
       addKnowledge(new_data, cll)
       server.send("Adding " + str(new_data) + " to classifier")
    return mpl
-
-
-         #return_label = parseCommand(command, cll, classifier_file)         
-# This return label is what is sent to the robot
-# The developer has to link this label with their functions
-
 
 """
 # I think I should change this...

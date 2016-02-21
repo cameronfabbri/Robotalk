@@ -22,7 +22,7 @@ train = [
    ('put my clothes in the hamper'                              ,'deliver'),
    ('put my mug into the dishwasher please'                     ,'deliver'),
    ('bring my trash outside and put it in the barrel'           ,'deliver'),
-   ('throw my shoes in the closet','deliver'),
+   ('throw my shoes in the closet'                              ,'deliver'),
    ('','deliver'),
    ('','get'),
    (''          ,'get'),
