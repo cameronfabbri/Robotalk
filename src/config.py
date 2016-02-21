@@ -10,7 +10,8 @@ just add the functionality in Parser.py
 Supports multiclassification
 
 """
-confidence_threshold = 0.75
+confidence_threshold = 0.85
+classifier_file = "classifier.pickle"
 
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5556
@@ -21,19 +22,6 @@ built_in = [
    ('train'),
    ('test command'),
    ('show labels')
-]
-
-test = [
-   ('hey what\'s up', 'greeting'),
-   ('hi how are you?', 'greeting'),
-   ('hello there', 'greeting'),
-   ('i think i\'m going to leave now', 'exit'),
-   ('cya', 'exit'),
-   ('i\'m leaving', 'exit'),
-   ('i\'m going home', 'exit'),
-   ('can you bring this paper to my boss?', 'deliver'),
-   ('bring my books back to the classroom', 'deliver'),
-   ('go to the main office and give them this paper please', 'deliver')
 ]
 
 train = [

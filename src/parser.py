@@ -5,16 +5,14 @@ import operator
 import cPickle as pickle
 import time
 import sys
-import socket
 
 # Your configuration file(s)
+import sockets
 import config
-#import server
 
-#BUFFER_SIZE = server.BUFFER_SIZE
+BUFFER_SIZE = 1024
 
 """
-
 Cameron Fabbri
 1/31/2016
 Parser.py
@@ -25,54 +23,56 @@ from other classes.
 We want to parse each command given. We will only be able to support a 
 limited number of functions, then the developer using this will be able
 to write their own algorithms.
-
 """
 
+# classifier file defined in config.py
+classifier_file = config.classifier_file
+try:
+   cll = pickle.load(open(classifier_file, 'rb'))  
+   print "Loaded classifier"
+except:
+   raise
+   exit(-1)
+
+"""
+   Allows the user to input a label and command to better
+   train the robot if it is having difficulty understanding
+"""
 def train():
-   server.send("Tell me the label:\n")
-   label = server.recv(BUFFER_SIZE)
-   command = raw_input("Tell me the command:\n")
+   sockets.send("What's the label?\n")
+   label    = sockets.recv(BUFFER_SIZE)
+   command  = sockets.send("What's the command?\n")
    new_data = [(command, label)]
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
 
+"""
+   Tests out a command
+"""
 def test_command(cll):
-   server.send("What command would you like to test?\n")
-   command = server.recv(BUFFER_SIZE)
-   mpl = -1
+   sockets.send("What command would you like to test?\n")
+   command = sockets.recv(BUFFER_SIZE)
    labels = cll.labels()
+   mpl = labels[0]
    prob_dist = cll.prob_classify(command)
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
-   #server.send("I think this is a " + str(mpl) + " command")
-   return "I think this is a %s command" %(str(mpl))
-
-"""
-   Maybe have a function that's a genaral here's a new label and
-   new command, and you can just send stuff to them whenever
-"""
+   sockets.send("I think this is a %s command" %(str(mpl)))
 
 def learn_new_command(command):
-   server.send("What type of command is this? (The label for the command, one word only)")
-   #new_label = server.recv(BUFFER_SIZE)
-   print new_label
-   print "Here..."
+   sockets.send("What type of command is this? (The label for the command, one word only)")
+   new_label = sockets.recv(BUFFER_SIZE)
    # could change this to "nevermind" or similar label
    if new_label == "no command":
       return -1
-   #conn.send("new label: " + str(new_label))
-   server.send("got new label")
-   print "Sent label..."
-   new_command = server.recv(BUFFER_SIZE)
-   #server.send("Got it")
-   print "Asked for new label"
-   #new_command = raw_input("New Command: ")
+   sockets.send("Okay, what's the command?")
+   new_command = sockets.recv(BUFFER_SIZE)
    new_data = [(new_command, new_label)]
    cll.update(new_data)
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
-   return return_message
+   return -1
 
 """
    This is updating the classifier when we know what label it should be
@@ -83,21 +83,20 @@ def addKnowledge(new_data, cll):
    pickle.dump(cll, f)
 
 def update_classifier(cll, prob_label_dict):
-   server.send("Please give me an example command for which this falls into\n")
-   l = server.recv(BUFFER_SIZE)
+   sockets.send("Please give me an example command for which this falls into\n")
+   l = sockets.recv(BUFFER_SIZE)
    if l == "no command":
       return -1
    ll = TextBlob(l, classifier=cll).classify()
    prob_label_dict = sorted(prob_label_dict.items(), key=operator.itemgetter(1))[::-1]
    prob_label_list = list(prob_label_dict)
    new_label = prob_label_list[0][0]
-   server.send("Adding command " + str(command) + " with label " + str(new_label))
+   sockets.send("Adding command " + str(command) + " with label " + str(new_label))
    new_data = [(command, new_label)]
    cll.update(new_data)
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
    return -1
-
 
 """
    Method for handling built in commands. Built in commands should only
@@ -133,51 +132,30 @@ def parseCommand(command, cll, classifier_file):
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
       prob_label_dict[label] = prob_dist.prob(label)
-      # Uncomment if you want to see the server print out each prob
-      #print "Probability for label " + str(label) + ": " + str(prob_dist.prob(label))
-   server.send("Most probable label: " + str(mpl) + ", prob: " + str(prob_dist.prob(mpl)))
-
-   risk_calc = 0
-   risk_threshold = 1
-   if risk_calc > risk_threshold:
-      print "It is too risky to execute this, should I proceed anyway?"
+   print "Most probable label: " + str(mpl) + ", prob: " + str(prob_dist.prob(mpl))
 
    # this is if the threshold wasn't passed. Add more to knowledge
    if prob_dist.prob(mpl) < confidence_threshold:
-      server.send("Is this a " + mpl + " command?\n")
-      a = server.recv(BUFFER_SIZE)
-      # at some point change this to yes classification
-      if a == "yes":
+      sockets.send("Is this a " + mpl + " command?")
+      a = sockets.recv(BUFFER_SIZE)
+      if a == "yes" or ans == "yeah":
          new_data = [(command, mpl)]
          addKnowledge(new_data, cll)
          return mpl
       else:
-         server.send("Want to add this to something I already know?\n")
-         ans = server.recv(BUFFER_SIZE)
-         # at some point change this to yes classification
-         if ans == "yes":
+         sockets.send("Want to add this to something I already know?\n")
+         ans = sockets.recv(BUFFER_SIZE)
+         if ans == "yes" or ans == "yeah":
             return update_classifier(cll, prob_label_dict)
          else:
-            server.send("Okay then!")
+            sockets.send("Okay then!")
             return -1
+
    # add what was just said to the classifier if it passed the threshold
    if prob_dist.prob(mpl) > confidence_threshold:
       new_data = [(command, mpl)]
       addKnowledge(new_data, cll)
-      server.send("Adding " + str(new_data) + " to classifier")
-   return mpl
-
-"""
-# I think I should change this...
-
-
-if return_label == "train":
-   train()
-
-if return_label == "test command":
-   test_command(cll)
-
-if return_label == "show labels":
-   show_labels(cll)
-"""
-
+      #print "adding knowledge..."
+      #sockets.send("Adding " + str(new_data) + " to classifier")
+   risk = 0
+   return mpl, risk

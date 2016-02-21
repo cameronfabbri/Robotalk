@@ -1,38 +1,8 @@
-import socket
+import sockets
 import sys
 import parser
+import sockets
 import cPickle as pickle
-
-if len(sys.argv) < 2:
-   print "Usage: python server.py [classifier.file]"
-   exit(-1)
-classifier_file = sys.argv[1]
-
-TCP_IP = '127.0.0.1'
-TCP_PORT = 5005
-BUFFER_SIZE = 1024
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((TCP_IP, TCP_PORT))
-print "Server ready"
-s.listen(1)
-conn, addr = s.accept()
-
-try:
-   cll = pickle.load(open(classifier_file, 'rb'))  
-   print "Loaded classifier"
-except:
-   raise
-   exit(-1)
-
-def send(message):
-   print "Sending..."
-   for m in message:
-      conn.send(m)
-      #recv(m)
-
-def recv(message):
-   return conn.recv(message)
 
 """
    I think I should make it so return_label returns 1 or more strings to send 
@@ -43,12 +13,23 @@ def recv(message):
    this will go through the array, send one string, wait for a response, then send another
 """
 
+cll = parser.cll
+classifier_file = parser.classifier_file
+
 while True:  
-   command = recv(1024)
+   command = sockets.recv(1024)
    if not command: break
-   return_label = parser.parseCommand(command, cll, classifier_file)
+   return_label, risk = parser.parseCommand(command, cll, classifier_file)
+   print "return_label: " + str(return_label)
+   print "risk: " + str(risk)
+   if return_label == "greeting":
+      sockets.send("Hello!")
    if return_label == "new command":
       parser.learn_new_command(command)
+   if return_label == "test command":
+      parser.test_command(cll)
+   if return_label == "train":
+      parser.train()
 conn.close()
 
 #receive array seeing if there is a new 
