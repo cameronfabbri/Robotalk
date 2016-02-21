@@ -10,5 +10,5 @@ rm src/*.pyc
 rm src/classifier.pickle
 
 git add *
-git commit -m '$com'
+git commit -m "$com"
 git push -u origin master
