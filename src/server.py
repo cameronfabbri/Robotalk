@@ -23,15 +23,13 @@ try:
    print "Loaded classifier"
 except:
    raise
-   #print "No classifier found or file corrupted! Run setup.py first to train a base classifier"
    exit(-1)
 
 def send(message):
    print "Sending..."
    for m in message:
       conn.send(m)
-      # Have to do something with the return string
-      recv(m)
+      #recv(m)
 
 def recv(message):
    return conn.recv(message)
@@ -43,7 +41,6 @@ def recv(message):
    That's where we have the array. so like ['What is the command?', 'What is the label?']
 
    this will go through the array, send one string, wait for a response, then send another
-
 """
 
 while True:  

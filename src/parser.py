@@ -9,6 +9,7 @@ import socket
 
 # Your configuration file(s)
 import config
+#import server
 
 #BUFFER_SIZE = server.BUFFER_SIZE
 
@@ -47,12 +48,17 @@ def test_command(cll):
    #server.send("I think this is a " + str(mpl) + " command")
    return "I think this is a %s command" %(str(mpl))
 
+"""
+   Maybe have a function that's a genaral here's a new label and
+   new command, and you can just send stuff to them whenever
+"""
+
 def learn_new_command(command):
-   return_message = list()   #server.send("What type of command is this? (The label for the command, one word only)")
-   return_message.append("What type of command is this? (The label for the command, one word only)")
+   server.send("What type of command is this? (The label for the command, one word only)")
    #new_label = server.recv(BUFFER_SIZE)
    print new_label
    print "Here..."
+   # could change this to "nevermind" or similar label
    if new_label == "no command":
       return -1
    #conn.send("new label: " + str(new_label))
@@ -68,22 +74,24 @@ def learn_new_command(command):
    pickle.dump(cll, f)
    return return_message
 
+"""
+   This is updating the classifier when we know what label it should be
+"""
+def addKnowledge(new_data, cll):
+   cll.update(new_data)
+   f = open(classifier_file, 'wb')
+   pickle.dump(cll, f)
+
 def update_classifier(cll, prob_label_dict):
    server.send("Please give me an example command for which this falls into\n")
    l = server.recv(BUFFER_SIZE)
-   # This is if you actually don't want to update the classifier
    if l == "no command":
       return -1
-   # This returns a label
    ll = TextBlob(l, classifier=cll).classify()
-
-   # find the probabilities of the commands, sort them, then ask in descending order
    prob_label_dict = sorted(prob_label_dict.items(), key=operator.itemgetter(1))[::-1]
    prob_label_list = list(prob_label_dict)
-   
    new_label = prob_label_list[0][0]
    server.send("Adding command " + str(command) + " with label " + str(new_label))
-
    new_data = [(command, new_label)]
    cll.update(new_data)
    f = open(classifier_file, 'wb')
@@ -106,17 +114,6 @@ def isBuiltIn(command):
          print "Built in.."
          return True
    return False
-"""
-   This is updating the classifier when we know what label it should be
-"""
-def addKnowledge(new_data, cll):
-   cll.update(new_data)
-   f = open(classifier_file, 'wb')
-   pickle.dump(cll, f)
-
-def show_labels(cll):
-   labels = cll.labels()
-   
 
 """
    Parses the command given, returns a json blob of possible location, object, subject, etc
@@ -132,22 +129,24 @@ def parseCommand(command, cll, classifier_file):
    if isBuiltIn(command):
       return command
 
-   test_list = list()
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
+      prob_label_dict[label] = prob_dist.prob(label)
       # Uncomment if you want to see the server print out each prob
       #print "Probability for label " + str(label) + ": " + str(prob_dist.prob(label))
-      test_list.append("Probability for label " + str(label) + ": " + str(prob_dist.prob(label)))
-      prob_label_dict[label] = prob_dist.prob(label)
-   # Uncomment if you want to send back the entire list of probs
-   #conn.send(str(test_list))
    server.send("Most probable label: " + str(mpl) + ", prob: " + str(prob_dist.prob(mpl)))
+
+   risk_calc = 0
+   risk_threshold = 1
+   if risk_calc > risk_threshold:
+      print "It is too risky to execute this, should I proceed anyway?"
 
    # this is if the threshold wasn't passed. Add more to knowledge
    if prob_dist.prob(mpl) < confidence_threshold:
       server.send("Is this a " + mpl + " command?\n")
       a = server.recv(BUFFER_SIZE)
+      # at some point change this to yes classification
       if a == "yes":
          new_data = [(command, mpl)]
          addKnowledge(new_data, cll)
@@ -155,12 +154,12 @@ def parseCommand(command, cll, classifier_file):
       else:
          server.send("Want to add this to something I already know?\n")
          ans = server.recv(BUFFER_SIZE)
+         # at some point change this to yes classification
          if ans == "yes":
             return update_classifier(cll, prob_label_dict)
          else:
             server.send("Okay then!")
             return -1
-
    # add what was just said to the classifier if it passed the threshold
    if prob_dist.prob(mpl) > confidence_threshold:
       new_data = [(command, mpl)]
