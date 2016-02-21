@@ -15,6 +15,7 @@ classifier_file = "classifier.pickle"
 
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5556
+BUFFER_SIZE = 1024
 
 built_in = [
    ('new command'),
@@ -35,6 +36,7 @@ train = [
    ('have a good day', 'exit'),
    ('see you later', 'exit'),
    ('go and get me some coffee', 'get'),
+   ('can you grab my glasses for me?', 'get'),
    ('go and get me a pencil', 'get'),
    ('go to the break room and get my coffee', 'get'),
    ('go down the hall and deliver this to the mail room', 'deliver'),

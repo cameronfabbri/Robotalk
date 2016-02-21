@@ -10,7 +10,7 @@ import sys
 import sockets
 import config
 
-BUFFER_SIZE = 1024
+BUFFER_SIZE = config.BUFFER_SIZE
 
 """
 Cameron Fabbri
@@ -37,20 +37,25 @@ except:
 """
    Allows the user to input a label and command to better
    train the robot if it is having difficulty understanding
+
+   This can also be used to learn a new command
 """
-def train():
-   sockets.send("What's the label?\n")
+def train(cll):
+   sockets.send("What's the label?")
    label    = sockets.recv(BUFFER_SIZE)
-   command  = sockets.send("What's the command?\n")
+   sockets.send("What's the command?")
+   command  = sockets.recv(BUFFER_SIZE)
    new_data = [(command, label)]
+   cll.update(new_data)
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
+   sockets.send("Got it!")
 
 """
    Tests out a command
 """
 def test_command(cll):
-   sockets.send("What command would you like to test?\n")
+   sockets.send("What command would you like to test?")
    command = sockets.recv(BUFFER_SIZE)
    labels = cll.labels()
    mpl = labels[0]
@@ -60,20 +65,6 @@ def test_command(cll):
          mpl = label
    sockets.send("I think this is a %s command" %(str(mpl)))
 
-def learn_new_command(command):
-   sockets.send("What type of command is this? (The label for the command, one word only)")
-   new_label = sockets.recv(BUFFER_SIZE)
-   # could change this to "nevermind" or similar label
-   if new_label == "no command":
-      return -1
-   sockets.send("Okay, what's the command?")
-   new_command = sockets.recv(BUFFER_SIZE)
-   new_data = [(new_command, new_label)]
-   cll.update(new_data)
-   f = open(classifier_file, 'wb')
-   pickle.dump(cll, f)
-   return -1
-
 """
    This is updating the classifier when we know what label it should be
 """
@@ -82,26 +73,19 @@ def addKnowledge(new_data, cll):
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
 
-def update_classifier(cll, prob_label_dict):
-   sockets.send("Please give me an example command for which this falls into\n")
-   l = sockets.recv(BUFFER_SIZE)
-   if l == "no command":
-      return -1
-   ll = TextBlob(l, classifier=cll).classify()
-   prob_label_dict = sorted(prob_label_dict.items(), key=operator.itemgetter(1))[::-1]
-   prob_label_list = list(prob_label_dict)
-   new_label = prob_label_list[0][0]
-   sockets.send("Adding command " + str(command) + " with label " + str(new_label))
-   new_data = [(command, new_label)]
-   cll.update(new_data)
-   f = open(classifier_file, 'wb')
-   pickle.dump(cll, f)
-   return -1
+def update_classifier(command, cll, prob_label_dict):
+   #sockets.send("Please give me an example command for which this falls into\n")
+   sockets.send("Ok what type of command is this?")
+   new_label = sockets.recv(BUFFER_SIZE)
+   if new_label != "no command":
+      sockets.send("Okay, let's try that again then!")
+      new_data = [(command, new_label)]
+      cll.update(new_data)
+      f = open(classifier_file, 'wb')
+      pickle.dump(cll, f)
 
 """
-   Method for handling built in commands. Built in commands should only
-   be one word commands that are hard to classify or are used frequently
-   e.g "exit", "hello", "stop", etc
+   Method for handling built in commands.
 
    If the command is built in, the parser will simply return the command
    instead of the label, so make sure you handle that on the robot side.
@@ -122,11 +106,12 @@ def parseCommand(command, cll, classifier_file):
    prob_dist            = cll.prob_classify(command)
    labels               = cll.labels()
    prob_label_dict      = dict()
-   mpl  = -1
+   risk = 0
+   mpl  = labels[0]
 
    # before using the classifier, check if it is a built in command
    if isBuiltIn(command):
-      return command
+      return command, risk
 
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
@@ -138,15 +123,15 @@ def parseCommand(command, cll, classifier_file):
    if prob_dist.prob(mpl) < confidence_threshold:
       sockets.send("Is this a " + mpl + " command?")
       a = sockets.recv(BUFFER_SIZE)
-      if a == "yes" or ans == "yeah":
+      if a == "yes" or a == "yeah":
          new_data = [(command, mpl)]
          addKnowledge(new_data, cll)
          return mpl
       else:
-         sockets.send("Want to add this to something I already know?\n")
+         sockets.send("Want to add this to something I already know?")
          ans = sockets.recv(BUFFER_SIZE)
          if ans == "yes" or ans == "yeah":
-            return update_classifier(cll, prob_label_dict)
+            return update_classifier(command, cll, prob_label_dict)
          else:
             sockets.send("Okay then!")
             return -1
@@ -155,7 +140,4 @@ def parseCommand(command, cll, classifier_file):
    if prob_dist.prob(mpl) > confidence_threshold:
       new_data = [(command, mpl)]
       addKnowledge(new_data, cll)
-      #print "adding knowledge..."
-      #sockets.send("Adding " + str(new_data) + " to classifier")
-   risk = 0
    return mpl, risk
