@@ -41,10 +41,12 @@ To connect and start sending and receiving messages run `python connect.py`.
 There are a few built in commands available. You can of course write your own as well. 
 
 `train`
+
 This command allows the user to add more knowledge to the classifier. Simply specify a \
 new or existing label (type of command) and a new command. 
 
 `test command`
+
 This command allows you to test what a command will be classified as. This is useful for
 testing a new command that may not have a lot of training data yet. This will not update
 the classifier in any way, whereas normal commands (if the threshold is passed) will. 
