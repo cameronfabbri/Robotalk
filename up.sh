@@ -6,7 +6,6 @@ if [ "$#" == 0 ] ; then
 fi
 
 com="$1"
-
 rm src/*.pyc
 rm src/classifier.pickle
 
