@@ -29,20 +29,19 @@ en/dev/)
 The first thing to be done is to train the classifier. This can be done by running
 `python setup.py`
 
-setup.py uses config.py for the original training data, so edit it to fit your needs.
+`setup.py` uses `config.py` for the original training data, so edit it to fit your needs.
 The classifier is saved to a file by pickling it. You have the ability to re-train the 
-classifier, or simply save another one. You can choose which classifier to use in config.
-py.
+classifier, or simply save another one. You can choose which classifier to use in `config.py.`
 
 This runs on TCP sockets. Start the server by running `python server.py`.
 To connect and start sending and receiving messages run `python connect.py`.
 
-### Built in commands
+#### Built in commands
 There are a few built in commands available. You can of course write your own as well. 
 
 `train`
 
-This command allows the user to add more knowledge to the classifier. Simply specify a \
+This command allows the user to add more knowledge to the classifier. Simply specify a
 new or existing label (type of command) and a new command. 
 
 `test command`
@@ -54,5 +53,11 @@ the classifier in any way, whereas normal commands (if the threshold is passed) 
 To write your own built in command, simply write the function in `parser.py` and catch 
 it in `server.py`
 
-The parser will return the label that it classifies your command. Simply use this label 
-for the functionality you need. 
+### Usage in robotics
+
+To use this framework in controlling robots, you will need to implement your own `connect
+.py`. The hook exists in linking the return label to your functions. The parser will 
+return to `connect.py` an array containing `[command, label, risk]`. All that needs to 
+be done on the developers end is to trigger an action based on the return label (and 
+associated risk). The command is returned as well in case the user wants to do any more 
+NLP with it.

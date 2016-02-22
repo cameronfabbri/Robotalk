@@ -23,5 +23,7 @@ while True:
       parser.train(cll)
       continue
    else:
-      sockets.send("This command has " + str(risk) + " risk")
+      #sockets.send("This command has " + str(risk) + " risk")
+      label_risk = [command, return_label, risk]
+      sockets.send(str(label_risk))
 conn.close()

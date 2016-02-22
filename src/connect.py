@@ -22,6 +22,6 @@ while True:
    command = raw_input("> ")
    s.sendall(command)
    response = s.recv(BUFFER_SIZE)
-   print "response: " + str(response)
+   print str(response)
 print "closed"
 s.close()

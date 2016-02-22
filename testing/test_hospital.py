@@ -58,14 +58,14 @@ test = [
 ]
 
 nbayes = NaiveBayesClassifier(train)
-n_acc = nbayes.accuracy(test)
+n_acc  = nbayes.accuracy(test)
 
 decision = DecisionTreeClassifier(train)
-d_acc = decision.accuracy(test)
+d_acc    = decision.accuracy(test)
 
-max_ent = MaxEntClassifier(train)
-m_acc = max_ent.accuracy(test)
+#max_ent = MaxEntClassifier(train)
+#m_acc = max_ent.accuracy(test)
 
 print "\nNaive Bayes accuracy: " + str(n_acc)
 print "Decision Tree accuracy: " + str(d_acc)
-print "MaxEnt accuracy: " + str(m_acc)
+#print "MaxEnt accuracy: " + str(m_acc)
