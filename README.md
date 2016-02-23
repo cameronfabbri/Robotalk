@@ -1,24 +1,29 @@
-# smallTalk
-smallTalk is a framework for implementing human-robot interaction through natural 
-language. smallTalk is aimed 
+# smartTalk
+smartTalk is a framework for implementing human-robot interaction through natural 
+language. smartTalk is aimed 
 towards developers whose focus is primarily towards the actions and functionality of a 
 robot, while still 
-needing communication. smallTalk provides bi-directional communication through natural 
+needing communication. smartTalk provides bi-directional communication through natural 
 language - sending and 
 receiving commands by text or voice. Feedback to the user is provided for risk assesment 
 and learning.
 A simple android application is included (soon) to send voice commands.
 
-smallTalk has the ability to learn new commands, as well as expand its vocabulary for 
+smartTalk has the ability to learn new commands, as well as expand its vocabulary for 
 already known commands.
-A small training set is included in config.py, which can be expanded upon through the 
+A smart training set is included in config.py, which can be expanded upon through the 
 process of using
-smallTalk. smallTalk uses TextBlob to build a multiclass classifier based on the 
+smartTalk. smartTalk uses TextBlob to build a multiclass classifier based on the 
 different commands you need.
+
+Talk about where this came from
+Instead of "I assisted" say "my undergraduate research focused on --- and was supervised 
+by Junaed"
+Indoors and outdoors, operated using speech over google glass
 
 ## Requirements
 
-smallTalk is written in Python and requires [TextBlob](https://textblob.readthedocs.org/
+smartTalk is written in Python and requires [TextBlob](https://textblob.readthedocs.org/
 en/dev/)
 
 1. pip install -U textblob
