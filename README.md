@@ -16,10 +16,11 @@ process of using
 smartTalk. smartTalk uses TextBlob to build a multiclass classifier based on the 
 different commands you need.
 
-Talk about where this came from
-Instead of "I assisted" say "my undergraduate research focused on --- and was supervised 
-by Junaed"
-Indoors and outdoors, operated using speech over google glass
+This research originated from my undergraduate research at Clarkson University. My
+research was focused on Intuitive Information Exchange in Human-Robot Dialog. I was
+supervised by Dr. Junaed Sattar. I developed several prototypes of a similar application
+for use on indoor and outdoor robots operated using speech over Google Glass. This 
+framework extends that research.
 
 ## Requirements
 
