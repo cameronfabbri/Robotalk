@@ -11,7 +11,11 @@ Supports multiclassification
 
 """
 confidence_threshold = 0.85
-classifier_file = "classifier.pickle"
+try:
+   classifier_file = "classifier.pickle"
+except:
+   print "No classifier found. run `setup.py` and enter the classifier filename in config.py"
+   exit()
 
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5556

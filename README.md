@@ -20,7 +20,7 @@ This research originated from my undergraduate research at Clarkson University. 
 research was focused on Intuitive Information Exchange in Human-Robot Dialog. I was
 supervised by Dr. Junaed Sattar. I developed several prototypes of a similar application
 for use on indoor and outdoor robots operated using speech over Google Glass. This 
-framework extends that research.
+framework extends that research. 
 
 ## Requirements
 
@@ -41,6 +41,9 @@ classifier, or simply save another one. You can choose which classifier to use i
 
 This runs on TCP sockets. Start the server by running `python server.py`.
 To connect and start sending and receiving messages run `python connect.py`.
+
+A system diagram showing the flow is displayed below.
+![System Diagram](SystemDiagram.jpg "System Diagram")
 
 #### Built in commands
 There are a few built in commands available. You can of course write your own as well. 

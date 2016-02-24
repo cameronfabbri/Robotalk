@@ -31,7 +31,7 @@ try:
    cll = pickle.load(open(classifier_file, 'rb'))  
    print "Loaded classifier"
 except:
-   raise
+   print "No classifier found. run `setup.py` and enter the classifier filename in config.py"
    exit(-1)
 
 """
