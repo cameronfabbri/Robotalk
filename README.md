@@ -1,7 +1,7 @@
 # smartTalk
 smartTalk is a framework for implementing human-robot interaction through natural 
-language. smartTalk is aimed 
-towards developers whose focus is primarily towards the actions and functionality of a 
+language. It is intended
+for developers whose focus is primarily towards the actions and functionality of a 
 robot, while still 
 needing communication. smartTalk provides bi-directional communication through natural 
 language - sending and 
@@ -11,9 +11,10 @@ A simple android application is included (soon) to send voice commands.
 
 smartTalk has the ability to learn new commands, as well as expand its vocabulary for 
 already known commands.
-A smart training set is included in config.py, which can be expanded upon through the 
+A small training set is included in config.py, which can be expanded upon through the 
 process of using
-smartTalk. smartTalk uses TextBlob to build a multiclass classifier based on the 
+smartTalk. You can also edit this config to fit your purposes.
+smartTalk uses TextBlob to build a multiclass classifier based on the 
 different commands you need.
 
 This research originated from my undergraduate research at Clarkson University. My
