@@ -1,6 +1,5 @@
 from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
-import numpy as np
 import time
 import cPickle as pickle
 
