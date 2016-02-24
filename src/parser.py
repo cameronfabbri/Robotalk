@@ -73,7 +73,7 @@ def addKnowledge(new_data, cll):
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
 
-def update_classifier(command, cll, prob_label_dict):
+def update_classifier(command, cll):
    #sockets.send("Please give me an example command for which this falls into\n")
    sockets.send("Ok what type of command is this?")
    new_label = sockets.recv(BUFFER_SIZE)
@@ -131,7 +131,7 @@ def parseCommand(command, cll, classifier_file):
          sockets.send("Want to add this to something I already know?")
          ans = sockets.recv(BUFFER_SIZE)
          if ans == "yes" or ans == "yeah":
-            return update_classifier(command, cll, prob_label_dict)
+            return update_classifier(command, cll)
          else:
             sockets.send("Okay then!")
             return -1
