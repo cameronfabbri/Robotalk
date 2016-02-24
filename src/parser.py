@@ -99,6 +99,13 @@ def isBuiltIn(command):
    return False
 
 """
+   Function programmable by the robotics researcher for their definition
+   of what risk association they want
+"""
+def getRisk(command):
+   return 0
+
+"""
    Parses the command given, returns a json blob of possible location, object, subject, etc
 """
 def parseCommand(command, cll, classifier_file):
@@ -106,12 +113,12 @@ def parseCommand(command, cll, classifier_file):
    prob_dist            = cll.prob_classify(command)
    labels               = cll.labels()
    prob_label_dict      = dict()
-   risk = 0
+   risk = getRisk(command)
    mpl  = labels[0]
 
    # before using the classifier, check if it is a built in command
    if isBuiltIn(command):
-      return command, risk
+      return command, getRisk(command)
 
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
