@@ -43,7 +43,7 @@ This runs on TCP sockets. Start the server by running `python server.py`.
 To connect and start sending and receiving messages run `python connect.py`.
 
 A system diagram showing the flow is displayed below.
-![System Diagram](SystemDiagram.jpg "System Diagram")
+![System Diagram](http://i.imgur.com/SmWRava.jpg "System Diagram")
 
 #### Built in commands
 There are a few built in commands available. You can of course write your own as well. 
