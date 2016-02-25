@@ -59,7 +59,7 @@ test = [
    ('alert the nurses we have intruders'                        ,'secure')
 ]
 
-#nbayes = NaiveBayesClassifier(train)
+nbayes = NaiveBayesClassifier(train)
 #n_acc  = nbayes.accuracy(test)
 
 #decision = DecisionTreeClassifier(train)
@@ -72,14 +72,19 @@ i = 1
 for command in test:
    x.append(i)
    i = i + 1
-   n = NaiveBayesClassifier(command)
-   y.append(n.accuracy(command))
+   y.append(nbayes.accuracy([command]))
 
 print x
 print y
 
-plt.plot(x, y, 'ro')
-plt.show()
+#plt.plot(x, y, 'ro')
+#plt.savefig('foo.png')
+
+plt.figure()
+plt.plot(x,y)
+plt.savefig("plot.png")
+
+#plt.show()
 
 #print "\nNaive Bayes accuracy: " + str(n_acc)
 #print "Decision Tree accuracy: " + str(d_acc)
