@@ -3,6 +3,8 @@ from textblob.classifiers import NaiveBayesClassifier
 from textblob.classifiers import DecisionTreeClassifier
 from textblob.classifiers import MaxEntClassifier
 
+import matplotlib.pyplot as plt
+
 """
 
 Cameron Fabbri
@@ -57,15 +59,28 @@ test = [
    ('alert the nurses we have intruders'                        ,'secure')
 ]
 
-nbayes = NaiveBayesClassifier(train)
-n_acc  = nbayes.accuracy(test)
+#nbayes = NaiveBayesClassifier(train)
+#n_acc  = nbayes.accuracy(test)
 
-decision = DecisionTreeClassifier(train)
-d_acc    = decision.accuracy(test)
+#decision = DecisionTreeClassifier(train)
+#d_acc    = decision.accuracy(test)
 
-#max_ent = MaxEntClassifier(train)
-#m_acc = max_ent.accuracy(test)
+x = list()
+y = list()
+  
+i = 1 
+for command in test:
+   x.append(i)
+   i = i + 1
+   n = NaiveBayesClassifier(command)
+   y.append(n.accuracy(command))
 
-print "\nNaive Bayes accuracy: " + str(n_acc)
-print "Decision Tree accuracy: " + str(d_acc)
-#print "MaxEnt accuracy: " + str(m_acc)
+print x
+print y
+
+plt.plot(x, y, 'ro')
+plt.show()
+
+#print "\nNaive Bayes accuracy: " + str(n_acc)
+#print "Decision Tree accuracy: " + str(d_acc)
+
