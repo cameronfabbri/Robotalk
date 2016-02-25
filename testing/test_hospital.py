@@ -56,7 +56,7 @@ test = [
    ('clean up the OR'                                           ,'clean'),
    ('pick up the trash in the hallway'                          ,'clean'),
    ('make sure the doors are locked'                            ,'secure'),
-   ('alert the nurses we have intruders'                        ,'secure')
+   ('stop that man from running away'                           ,'secure')
 ]
 
 nbayes = NaiveBayesClassifier(train)
@@ -68,24 +68,22 @@ nbayes = NaiveBayesClassifier(train)
 x = list()
 y = list()
   
-i = 1 
+labels = ['deliver', 'get', 'note', 'clean', 'secure']
+
+i = 1
+# we want to plot the probability that that the correct label has
 for command in test:
    x.append(i)
    i = i + 1
-   y.append(nbayes.accuracy([command]))
+   c = command[0]
+   label = command[1]
+   prob_dist = nbayes.prob_classify(command)
+   for l in labels:
+      print "command: " + str(c) + " label: " + str(l) + " probability: " + str(prob_dist.prob(label))
 
-print x
-print y
 
-#plt.plot(x, y, 'ro')
-#plt.savefig('foo.png')
-
+exit()
 plt.figure()
-plt.plot(x,y)
+plt.plot(x,y, 'ro')
 plt.savefig("plot.png")
-
-#plt.show()
-
-#print "\nNaive Bayes accuracy: " + str(n_acc)
-#print "Decision Tree accuracy: " + str(d_acc)
-
+plt.show()
