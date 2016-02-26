@@ -1,12 +1,10 @@
 from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
-from textblob.classifiers import DecisionTreeClassifier
-from textblob.classifiers import MaxEntClassifier
-
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 """
-
 Cameron Fabbri
 2/19/2016
 
@@ -16,9 +14,11 @@ This test simulates the case where a robot is to be
 used in a hospital. The classifier is trained on hospital
 specific commands
 
-"""
+TODO: Write a test script that combines the three into one classifier
+could have it start with one, then update using another's train data,
+then test again on everything, then update again, etc
 
-# labels: deliver, get, note, clean, secure
+"""
 train = [
    ('bring the medicine to the patient in room 110'               ,'deliver'),
    ('give these papers to a nurse on floor 3'                     ,'deliver'),
@@ -59,31 +59,36 @@ test = [
    ('stop that man from running away'                           ,'secure')
 ]
 
-nbayes = NaiveBayesClassifier(train)
-#n_acc  = nbayes.accuracy(test)
+print "Training..."
+cll = NaiveBayesClassifier(train)
+print "Done training\n"
+labels = cll.labels()
 
-#decision = DecisionTreeClassifier(train)
-#d_acc    = decision.accuracy(test)
-
-x = list()
+x = range(0,len(test))
 y = list()
-  
-labels = ['deliver', 'get', 'note', 'clean', 'secure']
+mpl = labels[0]
+x_ticks = list()
 
-i = 1
-# we want to plot the probability that that the correct label has
 for command in test:
-   x.append(i)
-   i = i + 1
    c = command[0]
-   label = command[1]
-   prob_dist = nbayes.prob_classify(command)
-   for l in labels:
-      print "command: " + str(c) + " label: " + str(l) + " probability: " + str(prob_dist.prob(label))
+   prob_dist = cll.prob_classify(c)
+   for label in labels:
+      if prob_dist.prob(label) > prob_dist.prob(mpl):
+         mpl = label
+   x_ticks.append(mpl)
+   y.append(prob_dist.prob(mpl))
 
+sum_ = 0.0
+for prob in y:
+   sum_ = prob + sum_
+accuracy = sum_/float(len(test))
+print "Average Accuracy: " + str(accuracy)
 
-exit()
+axes = plt.gca()
+axes.set_ylim([0,1])
+
 plt.figure()
+plt.xticks(x, x_ticks)
 plt.plot(x,y, 'ro')
-plt.savefig("plot.png")
-plt.show()
+plt.savefig("hostpital_test_plot.png")
+print "Plot saved as 'hospital_test_plot.png'"
