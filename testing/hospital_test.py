@@ -64,14 +64,17 @@ print "Training..."
 cll = NaiveBayesClassifier(train)
 print "Done training\n"
 print "Accuracy: " + str(cll.accuracy(test))
-pred_labels = cll.labels()
+pred_labels = list()
 true_labels = list()
 for obj in test:
-   true_labels.append(obj[1])
+   prob_label = cll.prob_classify(obj[0])
+   true_label = obj[1]
+   true_labels.append(true_label)
+   pred_labels.append(prob_label)
 
 
-#print "pred: ", pred_labels
-#print "true: ", true_labels
+print "pred: ", pred_labels
+print "true: ", true_labels
 #confusion_matrix(y_true, y_pred)
 print confusion_matrix(true_labels, pred_labels)
 
