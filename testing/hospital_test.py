@@ -3,6 +3,7 @@ from textblob.classifiers import NaiveBayesClassifier
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 """
 Cameron Fabbri
@@ -62,45 +63,16 @@ test = [
 print "Training..."
 cll = NaiveBayesClassifier(train)
 print "Done training\n"
-labels = cll.labels()
+print "Accuracy: " + str(cll.accuracy(test))
+pred_labels = cll.labels()
+true_labels = list()
+for obj in test:
+   true_labels.append(obj[1])
 
-x = range(0,len(test))
-y = list()
-mpl = labels[0]
-x_ticks = list()
 
-def getAccuracy(test, mpl, x, y, labels, x_ticks):
-   for command in test:
-      c = command[0]
-      prob_dist = cll.prob_classify(c)
-      for label in labels:
-         if prob_dist.prob(label) > prob_dist.prob(mpl):
-            mpl = label
-      x_ticks.append(mpl)
-      y.append(prob_dist.prob(mpl))
+print "pred: ", pred_labels
+print "true: ", true_labels
+#confusion_matrix(y_true, y_pred)
+print confusion_matrix(true_labels, pred_labels)
 
-   sum_ = 0.0
-   for prob in y:
-      sum_ = prob + sum_
-   accuracy = sum_/float(len(test))
-   print "Average Accuracy: " + str(accuracy)
-
-getAccuracy(test, mpl, x, y, labels, x_ticks)
-
-import test_butler
-butler_train = test_butler.train
-print "Updating classifier using butler training set..."
-cll.update(butler_train)
-
-print "Finding new accuracy..."
-getAccuracy(test, mpl, x, y, labels, x_ticks)
 exit()
-
-axes = plt.gca()
-axes.set_ylim([0,1])
-
-plt.figure()
-plt.xticks(x, x_ticks)
-plt.plot(x,y, 'ro')
-plt.savefig("hostpital_test_plot.png")
-print "Plot saved as 'hospital_test_plot.png'"
