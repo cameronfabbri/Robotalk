@@ -4,26 +4,14 @@ from sklearn.metrics import confusion_matrix
 import sys
 
 """
-Cameron Fabbri
-2/19/2016
-
-hospital test
-
-This test simulates the case where a robot is to be 
-used in a hospital. The classifier is trained on hospital
-specific commands
-
-"""
-"""
 
 Cameron Fabbri
 2/19/2016
 
-personal assistant robot testing
-
-This test simulates the case where a robot is to be a personal
-assistant perhaps for an ederly person or someone who is just
-lazy and has a lot of money
+General testing file. This takes in one or more python files
+containing a test name, training set, and testing set. This 
+computes their accuracy and confusion matrix and writes the 
+output to a file.
 
 """
 
@@ -67,6 +55,14 @@ def run_test(train, test, name):
       tr.write(str(accuracy) + "\n")
       tr.write(str(cm))
       tr.write("\n\n")
+
+   plt.imwrite("file.png", conf, cmap='binary', interploation='None')
+
+   #import matplotlib as mpl
+   #mpl.use('Agg')
+   #import matplotlib.pyplot as plt
+   #fig = plt.figure(cm, cmap='binary', interpolation='None')
+   #fig.savefig("butler.png")
 
 if __name__ == '__main__':
    with open("test_results.txt", "w") as tr:
