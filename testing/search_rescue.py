@@ -7,7 +7,7 @@ Search and rescue
 Dataset specific to a robot working with a search and rescue team
 
 """
-name = "Search and rescue"
+name = "Search and Rescue"
 
 train = [
    ('start recording and send me the video stream'             ,'observe'),

@@ -2,6 +2,7 @@ from textblob import TextBlob
 from textblob.classifiers import NaiveBayesClassifier
 from sklearn.metrics import confusion_matrix
 import sys
+from matplotlib.backends.backend_pdf import PdfPages
 
 """
 
@@ -56,13 +57,17 @@ def run_test(train, test, name):
       tr.write(str(cm))
       tr.write("\n\n")
 
-   plt.imwrite("file.png", conf, cmap='binary', interploation='None')
-
-   #import matplotlib as mpl
-   #mpl.use('Agg')
-   #import matplotlib.pyplot as plt
-   #fig = plt.figure(cm, cmap='binary', interpolation='None')
-   #fig.savefig("butler.png")
+   import matplotlib.pyplot as plt
+   fig = plt.figure()
+   ax = fig.add_subplot(111)
+   cax = ax.matshow(cm)
+   plt.title("Confusion Matrix For "+name)
+   fig.colorbar(cax)
+   ax.set_xticklabels(['']+labels)
+   ax.set_yticklabels(['']+labels)
+   plt.xlabel("Predicted")
+   plt.ylabel("True")
+   plt.savefig('plots/'+name+'.pdf', bbox_inches='tight') 
 
 if __name__ == '__main__':
    with open("test_results.txt", "w") as tr:
