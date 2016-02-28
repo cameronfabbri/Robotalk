@@ -26,7 +26,12 @@ train = [
    ('sweep up the kitchen'                                         ,'clean'),
    ('pick up all of my clothes off of the ground and put them away','clean'),
    ('get the vacuum out of the closet and vacuum the hallway'      ,'clean'),
-   ('can you pick up all this junk on the ground'                  , 'clean')
+   ('can you pick up all this junk on the ground'                  ,'clean'),
+   ('how much battery do you have left'                            ,'communicate'),
+   ('hey robot where are you right now'                            ,'communicate'),
+   ('what time is it'                                              ,'communicate'),
+   ('do you know where I left my car keys'                         ,'communicate'),
+   ('what is the temperature in here'                              ,'communicate')
 ]
 
 test = [
@@ -38,5 +43,8 @@ test = [
    ('go get me another pair of socks from my dresser'      ,'get'),
    ('sweep up all of these crumbs on the floor'            ,'clean'),
    ('can you vacuum all of the bedrooms?'                  ,'clean'),
-   ('pick all of this garbage off of the ground'           ,'clean')
+   ('pick all of this garbage off of the ground'           ,'clean'),
+   ('how much battery do you have'                         ,'communicate'),
+   ('what\'s the time'                                     ,'communicate'),
+   ('do you know where I put my wallet'                    ,'communicate')
 ]

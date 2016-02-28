@@ -26,7 +26,7 @@ train = [
    ('remember this'                                               ,'note'),
    ('okay take a note'                                            ,'note'),
    ('listen up'                                                   ,'note'),
-   ('sweep the hallway pleane'                                    ,'clean'),
+   ('sweep the hallway pleae'                                    ,'clean'),
    ('mop up the blood on the floor'                               ,'clean'),
    ('make all of the beds'                                        ,'clean'),
    ('go to room 341 and mop the floor'                            ,'clean'),
@@ -38,13 +38,17 @@ train = [
 test = [
    ('bring these bottles of percocet back to the lab'           ,'deliver'),
    ('take these pills and bring them to the patient in room 124','deliver'),
+   ('give bob his lunch, he is in room 6'                       ,'deliver'),
    ('go get the scissors from the nurse'                        ,'get'),
    ('can you bring me the medicine from the lab'                ,'get'),
+   ('go get the doctor, quickly'                                ,'get'),
    ('listen to me'                                              ,'note'),
-   ('alright take a note'                                       ,'note'),
+   ('I need you to remember this'                               ,'note'),
+	('alright take a note'                                       ,'note'),
    ('go to the operating room and mop up the floor'             ,'clean'),
    ('clean up the OR'                                           ,'clean'),
    ('pick up the trash in the hallway'                          ,'clean'),
    ('make sure the doors are locked'                            ,'secure'),
-   ('stop that man from running away'                           ,'secure')
+   ('stop that man from running away'                           ,'secure'),
+   ('close that door and lock it'                               ,'secure')
 ]

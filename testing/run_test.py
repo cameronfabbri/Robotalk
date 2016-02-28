@@ -27,11 +27,12 @@ lazy and has a lot of money
 
 """
 
-def run_test(train, test):
+def run_test(train, test, name):
    print "Training..."
    cll = NaiveBayesClassifier(train)
    print "Done training\n"
-   print "Accuracy: " + str(cll.accuracy(test))
+   accuracy = cll.accuracy(test)
+   print "Accuracy: " + str(accuracy)
 
    # get matching lists of predicted and true labels
    pred_labels = list()
@@ -57,20 +58,26 @@ def run_test(train, test):
       true_label_nums.append(label_num[true_l])
       pred_label_nums.append(label_num[pred_l])
 
-   #print true_label_nums
-   #print pred_label_nums
-   #print "\n"
-
-   print confusion_matrix(true_label_nums, pred_label_nums)
+   cm = confusion_matrix(true_label_nums, pred_label_nums)
+   print cm
    print "\n"
 
+   with open("test_results.txt", "a") as tr:
+      tr.write(str(name) + "\n")
+      tr.write(str(accuracy) + "\n")
+      tr.write(str(cm))
+      tr.write("\n\n")
+
 if __name__ == '__main__':
+   with open("test_results.txt", "w") as tr:
+      tr.write("")
+      tr.close()
    for i in range(1, len(sys.argv)):
       f = sys.argv[i].split(".")[0]
       module = __import__(f)
-      name = module.name
-      train = module.train
-      test = module.test
+      name   = module.name
+      train  = module.train
+      test   = module.test
 
       print "Testing " + str(name)
-      run_test(train, test)
+      run_test(train, test, name)

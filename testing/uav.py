@@ -20,7 +20,7 @@ train = [
    ('take a video of the path you take'                          ,'observe'),
    ('start recording when you get to your location'              ,'observe'),
    ('use all sensors to record your actions during the flight'   ,'observe'),
-   ('cirle the building and take a video'                        ,'observe'),
+   ('circle the building and take a video'                        ,'observe'),
    ('navigate around the area and take pictures every 10 seconds','observe'),
    ('fly back to the base'                                       ,'navigate'),
    ('fly to your target location'                                ,'navigate'),

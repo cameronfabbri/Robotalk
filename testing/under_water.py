@@ -11,7 +11,7 @@ name = "Aqua"
 
 train = [
    ('Come back to the boat'   ,'navigate'),
-   ('put my clothes in the hamper'                                 ,'navigate'),
+   (''                                 ,'navigate'),
    ('put my mug into the dishwasher please'                        ,'navigate'),
    ('bring my trash outside and put it in the barrel'              ,'navigate'),
    ('throw my shoes in the closet'                                 ,'navigate'),
