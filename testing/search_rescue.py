@@ -15,7 +15,7 @@ train = [
    ('can you zoom in some more and take a picture'             ,'observe'),
    ('okay start recording'                                     ,'observe'),
    ('if you find a survivor send back a picture'               ,'observe'),
-   ('start taking pictures every minute'                      ,'observe'),
+   ('start taking pictures every minute'                       ,'observe'),
    ('fly back to base'                                         ,'navigate'),
    ('follow me'                                                ,'navigate'),
    ('okay follow us'                                           ,'navigate'),

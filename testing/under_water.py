@@ -7,36 +7,42 @@ Under water robot
 Dataset specific to a robot working underwater with a team on a boat
 
 """
-name = "Aqua"
+name = "Under Water"
 
 train = [
    ('Come back to the boat'   ,'navigate'),
-   (''                                 ,'navigate'),
-   ('put my mug into the dishwasher please'                        ,'navigate'),
-   ('bring my trash outside and put it in the barrel'              ,'navigate'),
-   ('throw my shoes in the closet'                                 ,'navigate'),
-   ('take this glass to the kitchen'                               ,'navigate'),
-   ('get me my shoes from the closet'                              ,'get'),
-   ('bring me the remote'                                          ,'get'),
-   ('go grab my clothes from the dryer'                            ,'get'),
-   ('can you go get the mail please'                               ,'get'),
-   ('can you go to the cellar and get me a bottle of soda'         ,'get'),
-   ('hurry up and get me my keys, we\'re late.'                    ,'get'),
-   ('clean up this mess'                                           ,'clean'),
-   ('sweep up the kitchen'                                         ,'clean'),
-   ('pick up all of my clothes off of the ground and put them away','clean'),
-   ('get the vacuum out of the closet and vacuum the hallway'      ,'clean'),
-   ('can you pick up all this junk on the ground'                  , 'clean')
+   ('dive deeper'                                 ,'navigate'),
+   ('circle around the boat', 'navigate'),
+   ('go over to that pipe', 'navigate'),
+   ('navigate towards the cable near the bottom', 'navigate'),
+   ('look for any stray cables on the bottom', 'search'),
+   ('go into the cave and see if there are any other divers in there', 'search'),
+   ('go look for any stray pipes near that ship', 'search'),
+   ('locate the mine entrance', 'search'),
+   ('search for the ship that\'s supposed to be nearby', 'search'),
+   ('swim around the drill and monitor it', 'monitor'),
+   ('watch for any incoming animals near the divers', 'monitor'),
+   ('make sure the pipe does\'n break during repairment', 'monitor'),
+   ('monitor the environment and watch for any danger', 'monitor'),
+   ('keep a lookout for other boats coming our way', 'monitor'),
+   ('go check out that pipe for any damage', 'inspect'),
+   ('go in that sunken ship and make sure there aren\'t any animals inside', 'inspect'),
+   ('inspect the bottom of our boat and see if there\'s any damage to the hull', 'inspect'),
+   ('go see if there has been any damage to the drill', 'inspect'),
+   ('navigate along the cable and find where it is broken', 'inspect')
 ]
 
 test = [
-   ('take my plate and glass back to the kitchen please'   ,'navigate'),
-   ('put this shirt on my bed please'                      ,'navigate'),
-   ('can you put all of the dishes into the dishwasher'    ,'navigate'),
-   ('get my car keys from the drawer'                      ,'get'),
-   ('go to the fridge and grab me a beer please'           ,'get'),
-   ('go get me another pair of socks from my dresser'      ,'get'),
-   ('sweep up all of these crumbs on the floor'            ,'clean'),
-   ('can you vacuum all of the bedrooms?'                  ,'clean'),
-   ('pick all of this garbage off of the ground'           ,'clean')
+   ('circle the boat','navigate'),
+   ('okay, you can come back to the boat now','navigate'),
+   ('go down to the sea floor','navigate'),
+   ('look for any divers in the area','search'),
+   ('go look for the entrance of the cave','search'),
+   ('go look for anything man made on the floor','search'),
+   ('watch the divers and alert them for any approaching animals','monitor'),
+   ('watch the area for incoming boats','monitor'),
+   ('monitor the drill and let us know if it breaks','monitor'),
+   ('try and find the break along the cable','inspect'),
+   ('go see if the drill has been damaged','inspect'),
+   ('check our hull to see if it has been damaged','inspect')
 ]
