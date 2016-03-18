@@ -26,7 +26,8 @@ built_in = [
    ('exit'),
    ('train'),
    ('test command'),
-   ('show labels')
+   ('show labels'),
+   ('bye')
 ]
 
 train = [

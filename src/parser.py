@@ -93,7 +93,6 @@ def isBuiltIn(command):
    built_in = config.built_in
    for b_command in built_in:
       if b_command == command:
-         print "Built in.."
          return True
    return False
 
