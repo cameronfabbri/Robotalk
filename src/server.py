@@ -28,7 +28,9 @@ def get_return():
    		exit()
       else:
          command_label_risk = [command, return_label, risk]
-         sockets.send(str(command_label_risk))
+         response = "Got it!"
+         sockets.send(response)
+         #sockets.send(str(command_label_risk))
          return str(command_label_risk)
          # return to the user here in their script
 
