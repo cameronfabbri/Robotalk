@@ -85,7 +85,6 @@ import the following. Also be sure to copy the classifier.pickle file into the s
 as your program file.
 
 `sys.path.insert(0, '/path/to/smartTalk/src/')`
-
 `import server`
 
 A simple example, `test_algorithm.py` has been provided in the `/dev` folder.
