@@ -12,16 +12,14 @@ import config
 BUFFER_SIZE = config.BUFFER_SIZE
 
 """
+
 Cameron Fabbri
 1/31/2016
-Parser.py
+parser.py
 
 Main file for the framework.  This will control the flow and call functions
 from other classes.
 
-We want to parse each command given. We will only be able to support a 
-limited number of functions, then the developer using this will be able
-to write their own algorithms.
 """
 
 # classifier file defined in config.py
@@ -73,7 +71,6 @@ def addKnowledge(new_data, cll):
    pickle.dump(cll, f)
 
 def update_classifier(command, cll):
-   #sockets.send("Please give me an example command for which this falls into\n")
    sockets.send("Ok what type of command is this?")
    new_label = sockets.recv(BUFFER_SIZE)
    if new_label != "no command":
@@ -84,10 +81,7 @@ def update_classifier(command, cll):
       pickle.dump(cll, f)
 
 """
-   Method for handling built in commands.
-
-   If the command is built in, the parser will simply return the command
-   instead of the label, so make sure you handle that on the robot side.
+   Function for handling built in commands.
 """
 def isBuiltIn(command):
    built_in = config.built_in
