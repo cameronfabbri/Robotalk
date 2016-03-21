@@ -139,7 +139,7 @@ def parseCommand(command, cll, classifier_file):
             return update_classifier(command, cll)
          else:
             sockets.send("Okay then!")
-            return -1
+            return -1, 0
 
    # add what was just said to the classifier if it passed the threshold
    if prob_dist.prob(mpl) > confidence_threshold:
