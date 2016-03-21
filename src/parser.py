@@ -104,7 +104,8 @@ def getRisk(command):
    return 0
 
 """
-   Parses the command given, returns a json blob of possible location, object, subject, etc
+   Parses the given command. Returns a tuple of the most probable label and the
+   associated risk. 
 """
 def parseCommand(command, cll, classifier_file):
    confidence_threshold = config.confidence_threshold
@@ -131,12 +132,13 @@ def parseCommand(command, cll, classifier_file):
       if a == "yes" or a == "yeah":
          new_data = [(command, mpl)]
          addKnowledge(new_data, cll)
-         return mpl
+         return mpl, risk
       else:
          sockets.send("Want to add this to something I already know?")
          ans = sockets.recv(BUFFER_SIZE)
          if ans == "yes" or ans == "yeah":
-            return update_classifier(command, cll)
+            update_classifier(command, cll)
+            return -1, 0
          else:
             sockets.send("Okay then!")
             return -1, 0
