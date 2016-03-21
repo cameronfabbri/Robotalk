@@ -80,17 +80,8 @@ To use this framework in controlling robots, you will need to implement your own
 When the threshold for a command has been passed (the classifier 'understood'), the parser will 
 return a triplet containing `[command, label, risk]`. This triplet can then be used by your
 own algorithms to either trigger actions on a robot, or process the command with further
-Natural Language Processing. In your main program containing your algorithm calls, simply
-import the following. Also be sure to copy the classifier.pickle file into the same folder
-as your program file.
-
-`sys.path.insert(0, '/path/to/smartTalk/src/')`
-`import server`
-
-A simple example, `test_algorithm.py` has been provided in the `/dev` folder.
-**Important**: This file serves as the server. There is no reason to run both
-`server.py` and `test_algorithm.py`. Simply import the server to your script,
-and it will be started.
+Natural Language Processing. To use smartTalk, simply edit `server.py` to call your own
+algorithms based on the classifier's label.
 
 ## Usage outside of robotics
 
