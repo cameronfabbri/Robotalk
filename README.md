@@ -35,10 +35,9 @@ If you don't have pip, installing using
 
 `sudo apt-get install python-pip`
 
-
 If you are looking to use the testing scripts, you will also need scikit-learn
 
-3. sudo apt-get install python-sklearn
+3. `sudo apt-get install python-sklearn`
 
 ## Usage
 
