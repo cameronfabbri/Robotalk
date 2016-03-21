@@ -74,7 +74,7 @@ the classifier in any way, whereas normal commands (if the threshold is passed) 
 To write your own built in command, simply write the function in `parser.py` and catch 
 it in `server.py`
 
-### Usage in robotics
+## Usage in robotics
 
 To use this framework in controlling robots, you will need to implement your own `connect.py`. 
 When the threshold for a command has been passed (the classifier 'understood'), the parser will 
@@ -92,7 +92,7 @@ A simple example, `test_algorithm.py` has been provided in the `/dev` folder.
 `server.py` and `test_algorithm.py`. Simply import the server to your script,
 and it will be started.
 
-### Usage outside of robotics
+## Usage outside of robotics
 
 smartTalk can be used as a standalone system for controlling various electronics.
 In the same way that the returned label for a command can trigger an action by
