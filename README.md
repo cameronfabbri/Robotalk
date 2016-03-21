@@ -88,8 +88,19 @@ as your program file.
 `import server`
 
 A simple example, `test_algorithm.py` has been provided in the `/dev` folder.
+**Important**: This file serves as the server. There is no reason to run both
+`server.py` and `test_algorithm.py`. Simply import the server to your script,
+and it will be started.
 
 ### Usage outside of robotics
 
+smartTalk can be used as a standalone system for controlling various electronics.
+In the same way that the returned label for a command can trigger an action by
+a robot, that label can trigger an action on some other gadget. A very simple 
+example would be to have smartTalk running on a Linux computer, with a classifier
+trained on recognizing when you want to shut down the computer. "I'm going to bed
+now", "Shut down", ... etc, can all be used to trigger the action of shutting down
+the computer. 
 
-
+### Extra
+Any questions feel free to email me at cameronfabbri@gmail.com
