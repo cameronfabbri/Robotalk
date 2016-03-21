@@ -42,12 +42,20 @@ If you are looking to use the testing scripts, you will also need scikit-learn
 
 ## General Usage
 
+This section describes how to use smartTalk simply on its own.
 The first thing to be done is to train the classifier. This can be done by running
 `python setup.py`
 
 `setup.py` uses `config.py` for the original training data, so edit it to fit your needs.
 The classifier is saved to a file by pickling it. You have the ability to re-train the 
 classifier, or simply save another one. You can choose which classifier to use in `config.py.`
+`config.py` also contains the confidence threshold. The confidence threshold is what the
+classifier will use to determine if it should prompt the user or not. If a command's probability
+does not pass this threshold, then the user will be prompted for further information.
+
+After a classifier has been trained, run `python server.py` in one terminal, and `python connect.py`
+in another. The server will print out information such as the confidence probability, and the client
+will show the response.
 
 #### Built in commands
 There are a few built in commands available. You can of course write your own as well. 
@@ -68,9 +76,20 @@ it in `server.py`
 
 ### Usage in robotics
 
-To use this framework in controlling robots, you will need to implement your own `connect
-.py`. The hook exists in linking the return label to your functions. The parser will 
-return to `connect.py` an array containing `[command, label, risk]`. All that needs to 
-be done on the developers end is to trigger an action based on the return label (and 
-associated risk). The command is returned as well in case the user wants to do any more 
-NLP with it.
+To use this framework in controlling robots, you will need to implement your own `connect.py`. 
+When the threshold for a command has been passed (the classifier 'understood'), the parser will 
+return a triplet containing `[command, label, risk]`. This triplet can then be used by your
+own algorithms to either trigger actions on a robot, or process the command with further
+Natural Language Processing. In your main program containing your algorithm calls, simply
+import the following. Also be sure to copy the classifier.pickle file into the same folder
+as your program file.
+
+`sys.path.insert(0, '/path/to/smartTalk/src/')
+`import server`
+
+A simple example, `test_algorithm.py` has been provided in the `/dev` folder.
+
+### Usage outside of robotics
+
+
+
