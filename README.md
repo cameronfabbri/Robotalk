@@ -19,9 +19,10 @@ framework extends that research.
 
 ## Framework
 smartTalk operates using a client server model. The server uses a parser to send and  receive commands
-from the client. The client can be anything from a smart phone to another python program. It runs
-using TCP sockets. Usage and examples are provided in the following sections.
-A system diagram showing the flow is displayed below.
+from the client. The client can be anything from a smart phone to another python program. A simple 
+example is provided for the client, `connect.py`. smartTalk runs using TCP sockets. Usage and examples 
+are provided in the following sections. A system diagram showing the flow is displayed below.
+
 ![System Diagram](http://i.imgur.com/SmWRava.jpg "System Diagram")
 
 ## Requirements
