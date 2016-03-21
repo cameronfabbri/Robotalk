@@ -1,32 +1,32 @@
 # smartTalk
-smartTalk is a framework for implementing human-robot interaction through natural 
-language. It is intended
-for developers whose focus is primarily towards the actions and functionality of a 
-robot, while still 
-needing communication. smartTalk provides bi-directional communication through natural 
-language - sending and 
-receiving commands by text or voice. Feedback to the user is provided for risk assesment 
-and learning.
-A simple android application is included (soon) to send voice commands.
+smartTalk is a learning based framework for natural-language human-robot interaction. The primary goal
+of smartTalk is to enable non-expert users to control and program a mobile or stationary robot using
+natural language commands. smartTalk provides bi-directional communication through natural 
+language - sending and receiving commands by text or voice. Feedback to the user is provided for risk assesment 
+and learning.A simple android application is included (soon) to send voice commands.
 
-smartTalk has the ability to learn new commands, as well as expand its vocabulary for 
-already known commands.
-A small training set is included in config.py, which can be expanded upon through the 
-process of using
-smartTalk. You can also edit this config to fit your purposes.
-smartTalk uses TextBlob to build a multiclass classifier based on the 
-different commands you need.
+Initially, robots using smartTalk will be equipped with a limited number of primitive commands
+and functionality, however smartTalk has the ability to learn new commands, as well as expand its vocabulary for 
+already known commands. A small training set is included in config.py, which can be expanded upon through the 
+process of using smartTalk. You can also edit this config to fit your purposes.
+smartTalk uses TextBlob to build a multiclass classifier based on the different commands you need.
 
 This research originated from my undergraduate research at Clarkson University. My
 research was focused on Intuitive Information Exchange in Human-Robot Dialog. I was
-supervised by Dr. Junaed Sattar. I developed several prototypes of a similar application
+supervised by Dr. Junaed Sattar, and developed several prototypes of a similar application
 for use on indoor and outdoor robots operated using speech over Google Glass. This 
 framework extends that research. 
 
+## Framework
+smartTalk operates using a client server model. The server uses a parser to send and  receive commands
+from the client. The client can be anything from a smart phone to another python program. It runs
+using TCP sockets. Usage and examples are provided in the following sections.
+A system diagram showing the flow is displayed below.
+![System Diagram](http://i.imgur.com/SmWRava.jpg "System Diagram")
+
 ## Requirements
 
-smartTalk is written in Python and requires [TextBlob](https://textblob.readthedocs.org/
-en/dev/)
+smartTalk is written in Python and requires [TextBlob](https://textblob.readthedocs.org/en/dev/)
 
 1. `pip install -U textblob`
 2. `python -m textblob.download_corpora`
@@ -39,7 +39,7 @@ If you are looking to use the testing scripts, you will also need scikit-learn
 
 3. `sudo apt-get install python-sklearn`
 
-## Usage
+## General Usage
 
 The first thing to be done is to train the classifier. This can be done by running
 `python setup.py`
@@ -47,12 +47,6 @@ The first thing to be done is to train the classifier. This can be done by runni
 `setup.py` uses `config.py` for the original training data, so edit it to fit your needs.
 The classifier is saved to a file by pickling it. You have the ability to re-train the 
 classifier, or simply save another one. You can choose which classifier to use in `config.py.`
-
-This runs on TCP sockets. Start the server by running `python server.py`.
-To connect and start sending and receiving messages run `python connect.py`.
-
-A system diagram showing the flow is displayed below.
-![System Diagram](http://i.imgur.com/SmWRava.jpg "System Diagram")
 
 #### Built in commands
 There are a few built in commands available. You can of course write your own as well. 
