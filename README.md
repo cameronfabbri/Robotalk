@@ -62,6 +62,7 @@ in another. The server will print out information such as the confidence probabi
 will show the response.
 
 #### Built in commands
+
 There are a few built in commands available. You can of course write your own as well. 
 
 `train`
