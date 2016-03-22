@@ -7,12 +7,13 @@ and learning. A simple android application is included (soon) to send and receiv
 
 Initially, robots using smartTalk will be equipped with a limited number of primitive commands
 and functionality, however smartTalk has the ability to learn new commands, as well as expand its vocabulary for 
-already known commands. Note that when given a new command for a new *function*, while it may be able to classify
+already known commands. Note that when given a new command for a new *function*, while it may be able to learn and classify
 the command correctly, it may still be unable to execute such function. However, when given a new command
-for an existing function (e.g. another way to say such command), it is able to learn that command and map it
+for an existing function (e.g. another way to say a command), it is able to learn that command and map it
 to the given function. A small training set is included in config.py, which can be expanded upon through the 
 process of using smartTalk. You can also edit this config to fit your purposes.
-smartTalk uses TextBlob to build a multiclass classifier based on the different commands you need.
+smartTalk uses TextBlob to build a multiclass classifier based on the different commands you need. 
+The accuracy of classifying commands can be found in tests/.
 
 This research originated from my undergraduate research at Clarkson University. My
 research was focused on Intuitive Information Exchange in Human-Robot Dialog. I was
