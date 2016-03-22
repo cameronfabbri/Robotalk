@@ -3,11 +3,14 @@ smartTalk is a learning based framework for natural-language human-robot interac
 of smartTalk is to enable non-expert users to control and program a mobile or stationary robot using
 natural language commands. smartTalk provides bi-directional communication through natural 
 language - sending and receiving commands by text or voice. Feedback to the user is provided for risk assesment 
-and learning.A simple android application is included (soon) to send voice commands.
+and learning. A simple android application is included (soon) to send and receive commands.
 
 Initially, robots using smartTalk will be equipped with a limited number of primitive commands
 and functionality, however smartTalk has the ability to learn new commands, as well as expand its vocabulary for 
-already known commands. A small training set is included in config.py, which can be expanded upon through the 
+already known commands. Note that when given a new command for a new *function*, while it may be able to classify
+the command correctly, it may still be unable to execute such function. However, when given a new command
+for an existing function (e.g. another way to say such command), it is able to learn that command and map it
+to the given function. A small training set is included in config.py, which can be expanded upon through the 
 process of using smartTalk. You can also edit this config to fit your purposes.
 smartTalk uses TextBlob to build a multiclass classifier based on the different commands you need.
 
