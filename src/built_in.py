@@ -35,3 +35,12 @@ def train(cll):
    pickle.dump(cll, f)
    sockets.send("Got it!")
 
+def greet(return_label, command, collection):
+   post = {"label":return_label, "command":command}
+   collection.insert(post)
+   n = collection.find({"label":"greeting"}).count()
+   rand_n = randint(0,n)
+   random_greeting = collection.find({"label":"greeting"}).limit(1).skip(rand_n)
+   for r in random_greeting:
+      response = r['command']
+   return response

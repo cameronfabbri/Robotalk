@@ -1,15 +1,14 @@
+from pymongo import MongoClient 
+from textblob.classifiers import NaiveBayesClassifier
+import cPickle as pickle
+
 """
 
 Cameron Fabbri
 
-This trains a classifier from commands in a database:m
-
+This trains a classifier from commands in a database
 
 """
-
-from pymongo import MongoClient 
-from textblob.classifiers import NaiveBayesClassifier
-import cPickle as pickle
 
 client = MongoClient('localhost', 27000)
 db = client.smartTalk_db

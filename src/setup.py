@@ -6,8 +6,6 @@ import cPickle as pickle
 # Your config file with training sets
 import config
 
-
-
 """
 
 Cameron Fabbri
