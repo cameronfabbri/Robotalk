@@ -32,17 +32,20 @@ are provided in the following sections. A system diagram showing the flow is dis
 ## Requirements
 
 smartTalk is written in Python and requires [TextBlob](https://textblob.readthedocs.org/en/dev/)
+It also requires pymongo for storing a history of commands
 
 1. `pip install -U textblob`
 2. `python -m textblob.download_corpora`
+3. `pip install pymongo`
 
 If you don't have pip, installing using
 
 `sudo apt-get install python-pip`
 
-If you are looking to use the testing scripts, you will also need scikit-learn
+If you are looking to use the testing scripts, you will also need scikit-learn and matplotlib
 
-3. `sudo apt-get install python-sklearn`
+4. `sudo apt-get install python-sklearn`
+5. `pip install matplotlib`
 
 ## General Usage
 
