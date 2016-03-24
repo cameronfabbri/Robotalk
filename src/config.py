@@ -21,14 +21,7 @@ TCP_IP = '127.0.0.1'
 TCP_PORT = 5556
 BUFFER_SIZE = 1024
 
-built_in = [
-   ('new command'),
-   ('exit'),
-   ('train'),
-   ('test command'),
-   ('show labels'),
-   ('bye')
-]
+built_in = ['test command', 'train']
 
 train = [
    ('hello how are you today', 'greeting'),

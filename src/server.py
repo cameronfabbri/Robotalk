@@ -3,6 +3,7 @@ import sockets
 import parser
 import time
 from pymongo import MongoClient 
+import built_in
 
 cll = parser.cll
 classifier_file = parser.classifier_file
@@ -29,14 +30,11 @@ while True:
       sockets.send(str(response))
       continue
    elif return_label == "test command":
-      parser.test_command(cll)
+      built_in.test_command(cll)
       continue
    elif return_label == "train":
-      parser.train(cll)
+      built_in.train(cll)
       continue
-   elif return_label == "bye":
-      sockets.conn.close()
-      exit()
    # elif return_label = "your label here"
    # call_algorithm
    else:

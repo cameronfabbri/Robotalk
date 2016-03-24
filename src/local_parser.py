@@ -4,8 +4,6 @@ import operator
 import cPickle as pickle
 import time
 import sys
-import socket
-import os
 
 # Your configuration file(s)
 import config
@@ -13,98 +11,59 @@ import config
 """
 
 Cameron Fabbri
-1/31/2016
-Parser.py
+3/24/2016
+local_parser.py
 
-This will be a local parser if the user does not want to use a seperate interface to 
-communicate with the robot. It will use Google speech recognition, and the robot must
-have a mic obviously
+Main parser for use locally. Commands go directly to and from the robot
+
+Different robots will have different forms of audio out, so this file 
+will probably need to be edited when used.
+
+Could have a small screen on the robot that displays the text,
+like a small python gui with a single label
 
 """
 
-if len(sys.argv) < 2:
-   print "Usage: python parser.py [classifier.file]"
-   exit(-1)
-classifier_file = sys.argv[1]
-
+# classifier file defined in config.py
+classifier_file = config.classifier_file
 try:
    cll = pickle.load(open(classifier_file, 'rb'))  
    print "Loaded classifier"
 except:
-   print "No classifier found or file corrupted! Run setup.py first to train a base classifier"
+   print "No classifier found. run `setup.py` and enter the classifier filename in config.py"
    exit(-1)
 
-def train():
-   os.system("espeak 'What is the label'")
-   label = raw_input("> ")
-   command = raw_input("What is the command:\n")
+"""
+   Allows the user to input a label and command to better
+   train the robot if it is having difficulty understanding
+
+   This can also be used to learn a new command
+"""
+def train(cll):
+   sockets.send("What's the label?")
+   label    = sockets.recv(BUFFER_SIZE)
+   sockets.send("What's the command?")
+   command  = sockets.recv(BUFFER_SIZE)
    new_data = [(command, label)]
+   cll.update(new_data)
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
-   os.system("espeak 'Alright'")
-   return -1
+   sockets.send("Got it!")
 
+"""
+   Tests out a command
+"""
 def test_command(cll):
-   os.system("espeak 'What command would you like to test?'")
-   command = raw_input("> ")
-   mpl = -1
+   sockets.send("What command would you like to test?")
+   command = sockets.recv(BUFFER_SIZE)
    labels = cll.labels()
+   mpl = labels[0]
    prob_dist = cll.prob_classify(command)
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
-   os.system("espeak 'I think this is a %s command'" %(str(mpl)))
-   
-def learn_new_command(command):
-   os.system("espeak 'What type of command is this?'")
-   new_label = raw_input("> ")
-   if new_label == "no command":
-      return -1
-   os.system("espeak 'What is the command?'")
-   new_command = raw_input("> ")
-   new_data = [(new_command, new_label)]
-   cll.update(new_data)
-   f = open(classifier_file, 'wb')
-   pickle.dump(cll, f)
-   os.system("espeak 'Got it'")
-   return -1
+   sockets.send("I think this is a %s command" %(str(mpl)))
 
-# Should probably add a check if the highest probability isn't passed the threshold
-# for this make a checker function
-def update_classifier(cll, prob_label_dict):
-   os.system("espeak 'Please give me an example command for which this falls into'")
-   l = raw_input("> ")
-   # This is if you actually don't want to update the classifier
-   if l == "no command":
-      return -1
-   # This returns a label
-   ll = TextBlob(l, classifier=cll).classify()
-
-   # find the probabilities of the commands, sort them, then ask in descending order
-   prob_label_dict = sorted(prob_label_dict.items(), key=operator.itemgetter(1))[::-1]
-   prob_label_list = list(prob_label_dict)
-   new_label = prob_label_list[0][0]
-   os.system("espeak 'Adding command %s with label %s'" %(str(command), str(new_label)))
-   new_data = [(command, new_label)]
-   cll.update(new_data)
-   f = open(classifier_file, 'wb')
-   pickle.dump(cll, f)
-   return -1
-
-"""
-   Method for handling built in commands. Built in commands should only
-   be one word commands that are hard to classify or are used frequently
-   e.g "exit", "hello", "stop", etc
-
-   If the command is built in, the parser will simply return the command
-   instead of the label, so make sure you handle that on the robot side.
-"""
-def isBuiltIn(command):
-   built_in = config.built_in
-   for b_command in built_in:
-      if b_command == command:
-         return True
-   return False
 """
    This is updating the classifier when we know what label it should be
 """
@@ -113,73 +72,75 @@ def addKnowledge(new_data, cll):
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
 
-def show_labels(cll):
-   labels = cll.labels()
-   
+def update_classifier(command, cll):
+   sockets.send("Ok what type of command is this?")
+   new_label = sockets.recv(BUFFER_SIZE)
+   if new_label != "no command":
+      sockets.send("Okay, let's try that again then!")
+      new_data = [(command, new_label)]
+      cll.update(new_data)
+      f = open(classifier_file, 'wb')
+      pickle.dump(cll, f)
 
 """
-   Parses the command given, returns a json blob of possible location, object, subject, etc
+   Function for handling built in commands.
+"""
+def isBuiltIn(command):
+   built_in = config.built_in
+   for b_command in built_in:
+      if b_command == command:
+         return True
+   return False
+
+"""
+   Function programmable by the robotics researcher for their definition
+   of what risk association they want
+"""
+def getRisk(command):
+   return 0
+
+"""
+   Parses the given command. Returns a tuple of the most probable label and the
+   associated risk. 
 """
 def parseCommand(command, cll, classifier_file):
    confidence_threshold = config.confidence_threshold
    prob_dist            = cll.prob_classify(command)
    labels               = cll.labels()
    prob_label_dict      = dict()
-   # most probable label.
-   mpl  = -1
+   risk = getRisk(command)
+   mpl  = labels[0]
 
    # before using the classifier, check if it is a built in command
    if isBuiltIn(command):
-      return command
+      return command, getRisk(command)
 
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
          mpl = label
-      print "Probability for label " + str(label) + ": " + str(prob_dist.prob(label))
       prob_label_dict[label] = prob_dist.prob(label)
-   os.system("espeak 'Most probable label %s'" %(str(mpl)))
-   print "Most probable label: " + str(mpl)
+   print "Most probable label: " + str(mpl) + ", prob: " + str(prob_dist.prob(mpl))
 
    # this is if the threshold wasn't passed. Add more to knowledge
    if prob_dist.prob(mpl) < confidence_threshold:
-      os.system("espeak 'Is this a %s command?'" %mpl)
-      a = raw_input("> ")
-      if a == "yes":
+      sockets.send("Is this a " + mpl + " command?")
+      a = sockets.recv(BUFFER_SIZE)
+      if a == "yes" or a == "yeah":
          new_data = [(command, mpl)]
          addKnowledge(new_data, cll)
-         return mpl
+         return mpl, risk
       else:
-         os.system("espeak 'Want to add this to something I already know?'")
-         ans = raw_input("> ")
-         if ans == "yes":
-            return update_classifier(cll, prob_label_dict)
+         sockets.send("Want to add this to something I already know?")
+         ans = sockets.recv(BUFFER_SIZE)
+         if ans == "yes" or ans == "yeah":
+            update_classifier(command, cll)
+            return -1, 0
          else:
-            os.system("espeak 'Okay then!'")
-            return -1
+            sockets.send("Okay then!")
+            return -1, 0
 
    # add what was just said to the classifier if it passed the threshold
    if prob_dist.prob(mpl) > confidence_threshold:
       new_data = [(command, mpl)]
       addKnowledge(new_data, cll)
-   return mpl
-
-while True:
-   command = raw_input("> ")
-   return_label = parseCommand(command, cll, classifier_file)         
-
-   # This return label is what is sent to the robot
-   # The developer has to link this label with their functions
-   
-   # I think I should change this...
-   if return_label == "new command":
-      learn_new_command(command)
-
-   if return_label == "train":
-      train()
-
-   if return_label == "test command":
-      test_command(cll)
-
-   if return_label == "show labels":
-      show_labels(cll)
-
+   return mpl, risk

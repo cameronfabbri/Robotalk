@@ -8,6 +8,7 @@ import sys
 # Your configuration file(s)
 import sockets
 import config
+import built_in
 
 BUFFER_SIZE = config.BUFFER_SIZE
 
@@ -32,37 +33,6 @@ except:
    exit(-1)
 
 """
-   Allows the user to input a label and command to better
-   train the robot if it is having difficulty understanding
-
-   This can also be used to learn a new command
-"""
-def train(cll):
-   sockets.send("What's the label?")
-   label    = sockets.recv(BUFFER_SIZE)
-   sockets.send("What's the command?")
-   command  = sockets.recv(BUFFER_SIZE)
-   new_data = [(command, label)]
-   cll.update(new_data)
-   f = open(classifier_file, 'wb')
-   pickle.dump(cll, f)
-   sockets.send("Got it!")
-
-"""
-   Tests out a command
-"""
-def test_command(cll):
-   sockets.send("What command would you like to test?")
-   command = sockets.recv(BUFFER_SIZE)
-   labels = cll.labels()
-   mpl = labels[0]
-   prob_dist = cll.prob_classify(command)
-   for label in labels:
-      if prob_dist.prob(label) > prob_dist.prob(mpl):
-         mpl = label
-   sockets.send("I think this is a %s command" %(str(mpl)))
-
-"""
    This is updating the classifier when we know what label it should be
 """
 def addKnowledge(new_data, cll):
@@ -70,6 +40,9 @@ def addKnowledge(new_data, cll):
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
 
+"""
+   Updates the classifier when it is confused on a command
+"""
 def update_classifier(command, cll):
    sockets.send("Ok what type of command is this?")
    new_label = sockets.recv(BUFFER_SIZE)
@@ -84,11 +57,7 @@ def update_classifier(command, cll):
    Function for handling built in commands.
 """
 def isBuiltIn(command):
-   built_in = config.built_in
-   for b_command in built_in:
-      if b_command == command:
-         return True
-   return False
+   return command in config.built_in
 
 """
    Function programmable by the robotics researcher for their definition
