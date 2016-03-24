@@ -26,3 +26,4 @@ cll = NaiveBayesClassifier(train_list)
 f = open(filename, 'wb')
 pickle.dump(cll, f)
 
+print "Wrote classifier to " + filename

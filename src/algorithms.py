@@ -20,3 +20,10 @@ def greet(return_label, command, collection):
       response = r['command']
    return response
 
+"""
+   Function programmable by the robotics researcher for their definition
+   of what risk association they want
+"""
+def getRisk(command):
+   return 0
+

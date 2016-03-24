@@ -9,6 +9,7 @@ import sys
 import sockets
 import config
 import built_in
+import algorithms
 
 BUFFER_SIZE = config.BUFFER_SIZE
 
@@ -59,12 +60,6 @@ def update_classifier(command, cll):
 def isBuiltIn(command):
    return command in config.built_in
 
-"""
-   Function programmable by the robotics researcher for their definition
-   of what risk association they want
-"""
-def getRisk(command):
-   return 0
 
 """
    Parses the given command. Returns a tuple of the most probable label and the
@@ -75,7 +70,7 @@ def parseCommand(command, cll, classifier_file):
    prob_dist            = cll.prob_classify(command)
    labels               = cll.labels()
    prob_label_dict      = dict()
-   risk = getRisk(command)
+   risk = algorithms.getRisk(command)
    mpl  = labels[0]
 
    # before using the classifier, check if it is a built in command
