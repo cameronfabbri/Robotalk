@@ -75,7 +75,7 @@ def parseCommand(command, cll, classifier_file):
 
    # before using the classifier, check if it is a built in command
    if isBuiltIn(command):
-      return command, getRisk(command)
+      return command, algorithms.getRisk(command)
 
    for label in labels:
       if prob_dist.prob(label) > prob_dist.prob(mpl):
