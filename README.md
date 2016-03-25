@@ -51,7 +51,9 @@ If you are looking to use the testing scripts, you will also need scikit-learn a
 
 This section describes how to use smartTalk simply on its own.
 The first thing to be done is to train the classifier. This can be done by running
-`python setup.py`
+`python setup.py`. If you have previously run smartTalk and have a database 
+with a history of your commands, you can also train a classifier from that
+by running `python setup_from_db.py`
 
 `setup.py` uses `config.py` for the original training data, so edit it to fit your needs.
 The classifier is saved to a file by pickling it. You have the ability to re-train the 
