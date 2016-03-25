@@ -27,3 +27,4 @@ def greet(return_label, command, collection):
 def getRisk(command):
    return 0
 
+

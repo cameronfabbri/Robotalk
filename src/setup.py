@@ -19,6 +19,13 @@ the database
 I think what's going on is the classification is really bad with 
 single word commands. Try to train on multiple words
 
+---
+ TODO Combine this with setup_from_db.py. Just have one big setup that does it all with
+ all options. Another thought is to have the user put in locations in the setup which
+ will store in the db, so when they say 'bring my plate to the kitchen', it will know
+ the kitchen. Could have that as a totally seperate projcet though
+---
+
 """
 
 def train(filename):

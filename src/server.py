@@ -27,7 +27,7 @@ while True:
       built_in.test_command(cll)
       continue
    elif return_label == "train":
-      built_in.train(cll)
+      built_in.train(cll, collection)
       continue
    # elif return_label = "your label here"
    # call_algorithm

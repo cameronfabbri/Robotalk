@@ -1,6 +1,7 @@
 from pymongo import MongoClient 
 from textblob.classifiers import NaiveBayesClassifier
 import cPickle as pickle
+import config
 
 """
 
@@ -21,6 +22,11 @@ for row in collection.find({}):
    command = row['command']
    label = row['label']
    train_list.append([command,label])   
+
+y_n = raw_input("Include training from the configuration file as well? (y/n)\n: ")
+if y_n == "y":
+   for t in config.train:
+      train_list.append(t)
 
 cll = NaiveBayesClassifier(train_list)
 f = open(filename, 'wb')

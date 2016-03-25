@@ -60,7 +60,6 @@ def update_classifier(command, cll):
 def isBuiltIn(command):
    return command in config.built_in
 
-
 """
    Parses the given command. Returns a tuple of the most probable label and the
    associated risk. 
@@ -73,6 +72,10 @@ def parseCommand(command, cll, classifier_file):
    risk = algorithms.getRisk(command)
    mpl  = labels[0]
 
+   # for correcting spelling mistakes, don't think i'll use this
+   #command = str(TextBlob(command).correct())
+   #print "Corrected command " + command
+   
    # before using the classifier, check if it is a built in command
    if isBuiltIn(command):
       return command, algorithms.getRisk(command)
