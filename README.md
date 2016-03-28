@@ -88,10 +88,11 @@ it in `server.py`
 
 To use this framework in controlling robots, you will need to implement your own `connect.py`. 
 When the threshold for a command has been passed (the classifier 'understood'), the parser will 
-return a triplet containing `[command, label, risk]`. This triplet can then be used by your
+return a tuple containing `[label, risk]`. This tuple can then be used by your
 own algorithms to either trigger actions on a robot, or process the command with further
-Natural Language Processing. To use smartTalk, simply edit `server.py` to call your own
-algorithms based on the classifier's label.
+Natural Language Processing. After creating (or using) `connect.py`, edit server.py
+to call your algorithms for controlling your robot. An example has been provided in `server.py`
+for calling `algorithms.greet`.
 
 ## Usage outside of robotics
 
