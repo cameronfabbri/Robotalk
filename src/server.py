@@ -1,7 +1,7 @@
 import sockets
 import parser
 import time
-from pymongo import MongoClient 
+#from pymongo import MongoClient 
 import built_in
 import algorithms
 
@@ -32,8 +32,8 @@ while True:
    # elif return_label = "your label here"
    # call_algorithm
    else:
-      post = {"label":return_label, "command":command}
-      collection.insert(post)
+      #post = {"label":return_label, "command":command}
+      #collection.insert_one(post)
       command_label_risk = [command, return_label, risk]
       response = "Got it!"
       sockets.send(response)

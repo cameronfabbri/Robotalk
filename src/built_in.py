@@ -36,7 +36,7 @@ def train(cll, collection):
    new_data = [(command, label)]
    cll.update(new_data)
    post = {"label":label, "command":command}
-   collection.insert(post)
+   collection.insert_one(post)
    f = open(classifier_file, 'wb')
    pickle.dump(cll, f)
    sockets.send("Got it!")
