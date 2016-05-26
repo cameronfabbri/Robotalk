@@ -8,9 +8,9 @@ import algorithms
 cll = parser.cll
 classifier_file = parser.classifier_file
 
-client = MongoClient('localhost', 27000)
-db = client.smartTalk_db
-collection = db.responses
+#client = MongoClient('localhost', 27000)
+#db = client.smartTalk_db
+#collection = db.responses
 
 while True:
    command = sockets.recv(1024)
@@ -20,7 +20,8 @@ while True:
    print "return_label: " + str(return_label)
    print "risk: " + str(risk)
    if return_label == "greeting":
-      response = algorithms.greet(return_label, command, collection) 
+      #response = algorithms.greet(return_label, command, collection) 
+      response = "Hello"
       sockets.send(str(response))
       continue
    elif return_label == "test command":
